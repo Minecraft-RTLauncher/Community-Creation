@@ -170,6 +170,38 @@
 					height: 40px;
 				}
 			}
+
+			/* 弹幕样式 */
+			.danmaku-container {
+				position: fixed;
+				top: 0;
+				left: 0;
+				width: 100%;
+				height: 100%;
+				pointer-events: none;
+				z-index: 3;
+				overflow: hidden;
+			}
+
+			.danmaku {
+				position: absolute;
+				white-space: nowrap;
+				color: #fff;
+				font-size: 20px;
+				text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+				animation: danmaku-move linear;
+				pointer-events: none;
+				transform: translateX(100vw); /* 修改：初始位置在屏幕右侧 */
+			}
+
+			@keyframes danmaku-move {
+				from {
+					transform: translateX(100vw); /* 修改：从屏幕右侧开始 */
+				}
+				to {
+					transform: translateX(-100%); /* 修改：移动到元素完全离开屏幕左侧 */
+				}
+			}
 		</style>
 	</head>
 	<body>
@@ -188,6 +220,8 @@
 				<img src="https://images.icon-icons.com/2108/PNG/512/discord_icon_130958.png" alt="Discord">
 			</a>
 		</div>
+
+		<div class="danmaku-container"></div>
 
 		<script>
 			window.addEventListener('load', function() {
@@ -251,6 +285,56 @@
 				}
 				animate();
 			});
+
+			// 弹幕系统
+			const danmakuContainer = document.querySelector('.danmaku-container');
+			const danmakuTexts = [
+				'欢迎使用RTLauncher!',
+				'暑期即将发布!',
+				'敬请期待~',
+				'加入我们的社区!',
+				'RTLauncher启动器',
+				'期待与你相遇!',
+				'欢迎加入QQ群!',
+				'加入Discord社区!',
+				'Hello World!',
+				'你好，世界！'
+			];
+
+			function createDanmaku() {
+				const danmaku = document.createElement('div');
+				danmaku.className = 'danmaku';
+				danmaku.textContent = danmakuTexts[Math.floor(Math.random() * danmakuTexts.length)];
+				
+				// 随机设置弹幕的垂直位置
+				const top = Math.random() * (window.innerHeight - 30);
+				danmaku.style.top = `${top}px`;
+				
+				// 随机设置弹幕的速度（10-15秒）
+				const duration = 10 + Math.random() * 5;
+				danmaku.style.animationDuration = `${duration}s`;
+				
+				// 随机设置弹幕颜色
+				const hue = Math.random() * 360;
+				danmaku.style.color = `hsl(${hue}, 80%, 80%)`;
+				
+				danmakuContainer.appendChild(danmaku);
+				
+				// 动画结束后移除弹幕
+				danmaku.addEventListener('animationend', () => {
+					danmaku.remove();
+				});
+			}
+
+			// 每隔1-3秒随机发送一条弹幕
+			setInterval(() => {
+				createDanmaku();
+			}, 1000 + Math.random() * 2000);
+
+			// 初始发送几条弹幕
+			for(let i = 0; i < 5; i++) {
+				setTimeout(createDanmaku, i * 500);
+			}
 		</script>
 	</body>
 </html>
