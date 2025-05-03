@@ -1,4 +1,5 @@
 window.addEventListener("load", () => {
+	// 设置画布
 	const canvas = document.createElement("canvas");
 	const ctx = canvas.getContext("2d");
 	canvas.style.position = "fixed";
@@ -23,10 +24,12 @@ window.addEventListener("load", () => {
 		mouse.y = event.clientY;
 	});
 
+	// 设置发射效果
 	window.addEventListener("click", function (event) {
 		const clickX = event.clientX;
 		const clickY = event.clientY;
 
+		// 四向发射粒子
 		const dx = Math.random();
 		const dy = Math.random();
 		particles.push(new Particle(clickX + dx, clickY + dy));
@@ -34,10 +37,12 @@ window.addEventListener("load", () => {
 		particles.push(new Particle(clickX - dx, clickY + dy));
 		particles.push(new Particle(clickX - dx, clickY - dy));
 
+		// 随机移除粒子
 		const removeCount = Math.min(
 			Math.floor(Math.random() * 4) + 2,
 			particles.length - 1
 		);
+
 		for (let i = 0; i < removeCount; i++) {
 			const randomIndex = Math.floor(Math.random() * particles.length);
 			particles.splice(randomIndex, 1);
@@ -49,10 +54,12 @@ window.addEventListener("load", () => {
 		canvas.height = window.innerHeight;
 	}
 
-	window.addEventListener('resize', resizeCanvas);
+	// 实时同步大小
+	window.addEventListener("resize", resizeCanvas);
 	resizeCanvas();
 
 	class Particle {
+		// 构建粒子
 		constructor (x, y) {
 			this.x = x !== undefined ? x : Math.random() * canvas.width;
 			this.y = y !== undefined ? y : Math.random() * canvas.height;
@@ -68,16 +75,13 @@ window.addEventListener("load", () => {
 			const distance = Math.sqrt(dx * dx + dy * dy);
 
 			if (distance < mouse.radius && mouse.x && mouse.y) {
-				// 计算避让角度（远离鼠标的方向）
+				// 鼠标避让
 				const avoidAngle = Math.atan2(dy, dx);
-				// 增加避让速度
 				this.speed = this.baseSpeed * 3;
-				// 朝远离鼠标的方向移动
 				this.angle = avoidAngle + Math.PI; // 加π表示相反方向
 			} else {
 				// 恢复正常运动
 				this.speed = this.baseSpeed;
-				// 添加一些随机性使运动更自然
 				this.angle += (Math.random() - 0.5) * 0.1;
 			}
 

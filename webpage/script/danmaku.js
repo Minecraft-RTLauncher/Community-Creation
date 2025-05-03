@@ -15,8 +15,8 @@ window.addEventListener("load", () => {
 	];
 
 	function createDanmaku () {
-		const danmaku = document.createElement('div');
-		danmaku.className = 'danmaku';
+		const danmaku = document.createElement("div");
+		danmaku.className = "danmaku";
 		danmaku.textContent = danmakuTexts[Math.floor(Math.random() * danmakuTexts.length)];
 
 		// 随机设置弹幕的垂直位置
@@ -34,7 +34,7 @@ window.addEventListener("load", () => {
 		danmakuContainer.appendChild(danmaku);
 
 		// 动画结束后移除弹幕
-		danmaku.addEventListener('animationend', () => {
+		danmaku.addEventListener("animationend", () => {
 			danmaku.remove();
 		});
 	}
