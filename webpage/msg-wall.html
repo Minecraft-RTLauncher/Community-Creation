@@ -162,7 +162,7 @@
                     :style="`animation-delay: ${index * 0.1}s`">
                     <div class="flex items-start space-x-4">
                         <!-- 头像 -->
-                        <img :src="`http://q.qlogo.cn/headimg_dl?dst_uin=${message.qq}&spec=100&img_type=jpg`"
+                        <img loading="lazy" :src="`http://q.qlogo.cn/headimg_dl?dst_uin=${message.qq}&spec=100&img_type=jpg`"
                             @error="setDefaultAvatar($event)"
                             class="w-12 h-12 rounded-full border-2 border-green-500 object-cover">
 
@@ -261,7 +261,7 @@
                     this.isLoading = true;
                     try {
                         const page = initialLoad ? 1 : this.currentPage;
-                        const response = await fetch(`https://rtl-api.hellofurry.cn/rtl/get-msg-wall.php?page=${page}`);
+                        const response = await fetch(`https://api.hellofurry.cn/rtl/get-msg-wall.php?page=${page}`);
                         const data = await response.json();
 
                         if (Array.isArray(data)) {
@@ -389,7 +389,7 @@
 
                     this.isSubmitting = true;
                     try {
-                        const response = await fetch('https://rtl-api.hellofurry.cn/rtl/send-msg-wall.php', {
+                        const response = await fetch('https://api.hellofurry.cn/rtl/send-msg-wall.php', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
@@ -422,7 +422,7 @@
                 async sendLikeToBackend(messageId, likeCount) {
                     try {
                         //const response = await fetch('http://localhost:3000/public_html/rtl/json%E6%96%B9%E6%B3%95/like-msg-wall.php', {
-                        const response = await fetch('https://rtl-api.hellofurry.cn/rtl/like-msg-wall.php', {
+                        const response = await fetch('https://api.hellofurry.cn/rtl/like-msg-wall.php', {
                             method: 'POST',
                             headers: {
                                 'Content-Type': 'application/json'
