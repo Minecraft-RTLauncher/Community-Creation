@@ -200,6 +200,16 @@
 		canvas.style.zIndex = 1;
 		document.body.appendChild(canvas);
 
+		const mouse = {
+			x: null,
+			y: null,
+			radius: 75
+		};
+
+		window.addEventListener('mousemove', function (event) {
+			mouse.x = event.clientX;
+			mouse.y = event.clientY;
+		});
 
 		function resizeCanvas () {
 			canvas.width = window.innerWidth;
@@ -212,6 +222,7 @@
 		class Particle {
 			constructor () {
 				this.reset();
+				this.angle = Math.random() * Math.PI * 2;
 			}
 
 			reset () {
@@ -219,14 +230,34 @@
 				this.y = Math.random() * canvas.height;
 				this.radius = Math.random() * 2;
 				this.speed = Math.random() * 0.5 + 0.2;
-				this.angle = Math.random() * Math.PI * 2;
+				this.baseSpeed = this.speed;
 			}
 
 			update () {
+				const dx = mouse.x - this.x;
+				const dy = mouse.y - this.y;
+				const distance = Math.sqrt(dx * dx + dy * dy);
+
+				if (distance < mouse.radius && mouse.x && mouse.y) {
+					// 计算避让角度（远离鼠标的方向）
+					const avoidAngle = Math.atan2(dy, dx);
+					// 增加避让速度
+					this.speed = this.baseSpeed * 3;
+					// 朝远离鼠标的方向移动
+					this.angle = avoidAngle + Math.PI; // 加π表示相反方向
+				} else {
+					// 恢复正常运动
+					this.speed = this.baseSpeed;
+					// 添加一些随机性使运动更自然
+					this.angle += (Math.random() - 0.5) * 0.1;
+				}
+
 				this.x += Math.cos(this.angle) * this.speed;
 				this.y += Math.sin(this.angle) * this.speed;
-				if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) this
-						.reset();
+
+				if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+					this.reset();
+				}
 			}
 
 			draw () {
