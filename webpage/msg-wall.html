@@ -8,23 +8,101 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-    <link href="msgwall_assets/fonts/Minecraft-1.ttf" rel="stylesheet">
-    <link rel="stylesheet" href="msgwall_assets/styles.css">
+    <style>
+        @font-face {
+            font-family: 'Minecraft';
+            src: url('msgwall_assets/fonts/5_Minecraft AE.ttf') format('truetype');
+        }
+
+        body,
+        body * {
+            font-family: 'Minecraft', sans-serif !important;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        .animate-slide-up {
+            animation: slideUp 0.6s ease-out forwards;
+        }
+
+        /* 自定义滚动条 */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #1a1a1a;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #4d7c0f;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #65a30d;
+        }
+
+        .captcha-container {
+            position: relative;
+            height: 40px;
+            width: 120px;
+            overflow: hidden;
+            border-radius: 4px;
+            background-color: #1a1a1a;
+            cursor: pointer;
+            user-select: none;
+            -webkit-user-select: none;
+        }
+
+        .captcha-image {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
 </head>
 
 <body class="bg-gray-900 text-gray-100 font-sans"
-    style="background-image: url('msgwall_assets/images/wallpaper_minecraft_pc_bundle_1920x1080.png'); background-size: cover; background-attachment: fixed;">
+    style="background-image: url('https://www.loliapi.com/acg/'); background-size: cover; background-attachment: fixed;">
     <div x-data="messageBoard()" x-init="fetchMessages(true)" class="min-h-screen py-8 px-4">
         <!-- 标题 -->
         <div class="text-center mb-8 animate-fade-in">
-            <h1 class="text-5xl font-bold mb-2 text-green-400 minecraft-font">留言板</h1>
+            <h1 class="text-5xl font-bold mb-2 text-green-400">留言板</h1>
             <p class="text-gray-300">分享你的想法和创意</p>
         </div>
 
         <!-- 留言表单 -->
         <div
             class="max-w-2xl mx-auto bg-gray-800 bg-opacity-80 rounded-lg p-6 mb-8 shadow-lg border-2 border-green-600 animate-slide-up">
-            <h2 class="text-2xl font-bold mb-4 text-green-400 minecraft-font">发布新留言</h2>
+            <h2 class="text-2xl font-bold mb-4 text-green-400">发布新留言</h2>
             <form @submit.prevent="submitMessage" class="space-y-4">
                 <div>
                     <label for="username" class="block text-sm font-medium text-gray-300">用户名</label>
@@ -49,17 +127,11 @@
                     <div class="flex items-center space-x-2">
                         <input type="text" id="captcha" x-model="form.captcha" required
                             class="mt-1 block w-32 px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
-                        <div class="bg-gray-700 p-2 rounded-md border border-gray-600">
-                            <span x-text="captchaText" class="text-xl font-mono tracking-wider text-green-400"></span>
+
+                        <div class="captcha-container" @click="generateCaptcha">
+                            <!-- 使用Canvas渲染验证码 -->
+                            <canvas x-ref="captchaCanvas" width="120" height="40" class="captcha-image"></canvas>
                         </div>
-                        <button type="button" @click="generateCaptcha"
-                            class="px-3 py-2 bg-gray-600 rounded-md hover:bg-gray-500 transition">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24"
-                                stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                            </svg>
-                        </button>
                     </div>
                 </div>
 
@@ -171,6 +243,7 @@
                 currentPage: 1,
                 isSubmitting: false,
                 captchaText: '',
+                captchaSvg: '',  // 新增
                 form: {
                     username: '',
                     qq: '',
@@ -217,72 +290,79 @@
                     }
                 },
 
-                async submitMessage() {
-                    if (this.isSubmitting) return;
-
-                    if (this.form.captcha.toLowerCase() !== this.captchaText.toLowerCase()) {
-                        this.showToast('验证码错误', 'error');
-                        this.generateCaptcha();
-                        return;
-                    }
-
-                    if (!this.form.username || !this.form.qq || !this.form.content) {
-                        this.showToast('请填写完整信息', 'error');
-                        return;
-                    }
-
-                    this.isSubmitting = true;
-
-                    try {
-                        const timestamp = new Date().toISOString();
-                        const payload = {
-                            username: this.form.username,
-                            qq: this.form.qq,
-                            content: this.form.content,
-                            timestamp: timestamp
-                        };
-
-                        const response = await fetch('http://rtl-api.hellofurry.cn/rtl/send-msg-wall.php', {
-                        //const response = await fetch('http://localhost:3000/public_html/rtl/json%E6%96%B9%E6%B3%95/send-msg-wall.php', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json'
-                            },
-                            body: JSON.stringify(payload)
-                        });
-
-                        const result = await response.json();
-
-                        if (result.success) {
-                            this.showToast('留言发布成功', 'success');
-                            this.form = {
-                                username: this.form.username,
-                                qq: this.form.qq,
-                                content: '',
-                                captcha: ''
-                            };
-                            this.generateCaptcha();
-                            this.messages = [];
-                            this.fetchMessages(true);
-                            this.confetti();
-                        } else {
-                            this.showToast(result.message || '留言发布失败', 'error');
-                        }
-                    } catch (error) {
-                        console.error('发布留言失败:', error);
-                        this.showToast('发布留言失败，请重试', 'error');
-                    } finally {
-                        this.isSubmitting = false;
-                    }
-                },
-
+                //验证码功能
                 generateCaptcha() {
-                    const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+                    // 生成6位随机字符，可自定义:)
+                    const chars = '0123456789ABCDEFGHJKLMNPQRSTUVWXYZ';
                     let captcha = '';
                     for (let i = 0; i < 6; i++) {
                         captcha += chars.charAt(Math.floor(Math.random() * chars.length));
                     }
                     this.captchaText = captcha;
+
+                    const canvas = this.$refs.captchaCanvas;
+                    const ctx = canvas.getContext('2d');
+
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+                    ctx.fillStyle = '#1a1a1a';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+                    // 绘制干扰线（3-5条）
+                    for (let i = 0; i < 3 + Math.floor(Math.random() * 3); i++) {
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${Math.random() * 0.3 + 0.2})`;
+                        ctx.lineWidth = Math.random() * 0.5 + 0.5;
+                        ctx.beginPath();
+                        ctx.moveTo(Math.random() * canvas.width, Math.random() * canvas.height);
+                        ctx.lineTo(Math.random() * canvas.width, Math.random() * canvas.height);
+                        ctx.stroke();
+                    }
+
+                    // 绘制干扰点（30-50个）
+                    for (let i = 0; i < 30 + Math.floor(Math.random() * 20); i++) {
+                        ctx.fillStyle = `rgba(255, 255, 255, ${Math.random() * 0.2 + 0.1})`;
+                        ctx.beginPath();
+                        ctx.arc(
+                            Math.random() * canvas.width,
+                            Math.random() * canvas.height,
+                            Math.random() * 1.5,
+                            0,
+                            2 * Math.PI
+                        );
+                        ctx.fill();
+                    }
+
+                    // 绘制验证码文本
+                    for (let i = 0; i < captcha.length; i++) {
+                        const char = captcha.charAt(i);
+                        ctx.font = `${Math.floor(Math.random() * 6 + 18)}px Arial`;
+                        ctx.fillStyle = `hsl(${Math.random() * 60 + 100}, 80%, ${Math.random() * 20 + 60}%)`;
+
+                        const x = 15 + i * 15 + (Math.random() * 4 - 2);
+                        const y = 25 + (Math.random() * 8 - 4);
+
+                        ctx.save();
+                        ctx.translate(x, y);
+                        ctx.rotate((Math.random() * 30 - 15) * Math.PI / 180);
+
+                        ctx.fillText(char, 0, 0);
+                        ctx.restore();
+                    }
+
+                    // 添加波纹效果
+                    ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+                    ctx.lineWidth = 2;
+                    for (let i = 0; i < 3; i++) {
+                        ctx.beginPath();
+                        ctx.arc(
+                            canvas.width / 2,
+                            canvas.height / 2,
+                            i * 10 + 5,
+                            0,
+                            2 * Math.PI
+                        );
+                        ctx.stroke();
+                    }
                 },
 
                 // 在 messageBoard() 数据对象中添加点赞方法
@@ -297,6 +377,46 @@
                     // 显示点赞动画和提示
                     this.showToast('点赞成功', 'success');
                     this.showHeartAnimation();
+                },
+
+                async submitMessage() {
+                    // 验证验证码 - 不区分大小写
+                    if (this.form.captcha.toLowerCase() !== this.captchaText.toLowerCase()) {
+                        this.showToast('验证码错误', 'error');
+                        this.generateCaptcha();
+                        return;
+                    }
+
+                    this.isSubmitting = true;
+                    try {
+                        const response = await fetch('https://rtl-api.hellofurry.cn/rtl/send-msg-wall.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json'
+                            },
+                            body: JSON.stringify({
+                                username: this.form.username,
+                                qq: this.form.qq,
+                                content: this.form.content
+                            })
+                        });
+
+                        const result = await response.json();
+                        if (result.success) {
+                            this.showToast('留言提交成功', 'success');
+                            this.confetti();
+                            this.form = { username: '', qq: '', content: '', captcha: '' };
+                            this.generateCaptcha();
+                            this.fetchMessages(true); // 刷新留言列表
+                        } else {
+                            this.showToast(result.message || '提交失败', 'error');
+                        }
+                    } catch (error) {
+                        console.error('提交留言失败:', error);
+                        this.showToast('网络错误，请重试', 'error');
+                    } finally {
+                        this.isSubmitting = false;
+                    }
                 },
 
                 async sendLikeToBackend(messageId, likeCount) {
