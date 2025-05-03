@@ -12,5 +12,5 @@
 /* 旋转动画 */
 .social-links img:hover {
 	transform: scale(1.15) rotate(8deg);
-	box-shadow: 0 0 15px var(#4ecdc4);
+	box-shadow: 0 0 15px #4ecdc4;
 }
