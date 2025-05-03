@@ -114,3 +114,30 @@ body::after {
 .qq-link img {
 	background: rgba(0, 136, 255, 0.1);
 }
+
+/* 手机端适配 */
+@media (max-width: 768px) {
+	.logo {
+		width: 100px;
+		height: 100px;
+	}
+
+	.title {
+		font-size: 1.8rem;
+	}
+
+	.title::after {
+		font-size: 1rem;
+		bottom: -25px;
+	}
+
+	.social-links {
+		gap: 25px;
+		bottom: 20px;
+	}
+
+	.social-links img {
+		width: 40px;
+		height: 40px;
+	}
+}
