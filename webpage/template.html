@@ -206,8 +206,10 @@
 			radius: 75
 		};
 
-		const PARTICLE_COUNT = 100;
+		const PARTICLE_COUNT = Math.floor(window.innerWidth * window.innerHeight / 7680);
 		let particles = [];
+
+		const baseSpeedRate = window.innerWidth / 1280 / 2;
 
 		window.addEventListener('mousemove', function (event) {
 			mouse.x = event.clientX;
@@ -248,7 +250,7 @@
 				this.x = x !== undefined ? x : Math.random() * canvas.width;
 				this.y = y !== undefined ? y : Math.random() * canvas.height;
 				this.radius = Math.random() * 2;
-				this.baseSpeed = Math.random() * 0.5 + 0.2;
+				this.baseSpeed = Math.random() * baseSpeedRate + 0.2;
 				this.speed = this.baseSpeed;
 				this.angle = Math.random() * Math.PI * 2;
 			}
