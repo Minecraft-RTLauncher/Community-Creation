@@ -1,0 +1,16 @@
+/* 加载动画 */
+.loaded .container {
+	transform: translateY(0);
+	opacity: 1;
+}
+
+/* 悬浮动画 */
+.logo:hover {
+	transform: rotate(5deg) scale(1.05);
+}
+
+/* 旋转动画 */
+.social-links img:hover {
+	transform: scale(1.15) rotate(8deg);
+	box-shadow: 0 0 15px var(#4ecdc4);
+}
