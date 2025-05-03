@@ -1,18 +1,21 @@
+const danmakuTexts = [];
+
+// 从JSON中读取弹幕
+fetch("./script/danmakuList.json")
+	.then(res => {
+		if (!res.ok) {
+			throw new Error("Can't find danmakuList.json !");
+		}
+		return res.json();
+	})
+	.then(data => {
+		for (const text of data.danmaku) {
+			danmakuTexts.push(text);
+		}
+	});
+
 window.addEventListener("load", () => {
 	const danmakuContainer = document.querySelector('.danmaku-container');
-
-	const danmakuTexts = [
-		'RTLauncher启动器欢迎您!',
-		'暑期即将发布!',
-		'敬请期待~',
-		'加入我们的社区!',
-		'RTLauncher启动器',
-		'Hello World!',
-		'你好，世界！',
-		'期待与你相遇!',
-		'欢迎加入QQ群!',
-		'加入Discord社区!'
-	];
 
 	function createDanmaku () {
 		const danmaku = document.createElement("div");
