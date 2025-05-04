@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/html">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>RTLauncher启动器</title>
+	<link rel="shortcut icon" href="assets/logo.svg" type="image/x-icon">
+
+	<link rel="stylesheet" href="./stylesheet/index.css">
+	<link rel="stylesheet" href="./stylesheet/animation.css">
+
+	<script src="./script/index.js"></script>
+	<script src="./script/particle.js"></script>
+	<script src="./script/danmaku.js"></script>
+	<script src="./script/logo3Danimation.js"></script>
+	<!-- 禁止图片拖拽 -->
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const images = document.querySelectorAll('img');
+			images.forEach(img => {
+				img.addEventListener('dragstart', function (e) {
+					e.preventDefault();
+				});
+			});
+		});
+	</script>
+</head>
+
+<body>
+	<div class="container">
+		<div class="logo">
+			<div class="logo-inner">
+				<img src="assets/logo.svg" alt="">
+			</div>
+		</div>
+		<h1 class="title">暑期即将发布，敬请期待</h1>
+	</div>
+
+	<div class="social-links container">
+		<a href="https://qm.qq.com/q/Y1ImdLdKQ6" target="_blank" class="qq-link">
+			<img src="https://wiki.connect.qq.com/wp-content/uploads/2013/10/03_qq_symbol-1-768x921.png" alt="QQ群">
+		</a>
+		<a href="https://discord.gg/X6NHJkP3Sv" target="_blank">
+			<img src="https://images.icon-icons.com/2108/PNG/512/discord_icon_130958.png" alt="Discord">
+		</a>
+	</div>
+
+	<div class="danmaku-container"></div>
+</body>
+
+</html>
