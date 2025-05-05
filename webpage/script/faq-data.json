@@ -1,0 +1,27 @@
+{
+  "version": "1.0.1",
+  "categories": [
+    {
+      "name": "关于如何添加FAQ",
+      "questions": [
+        {
+          "question": "如何添加FAQ",
+          "version": "1.0.0",
+          "answer": {
+            "type": "steps",
+            "items": [
+              {
+                "title": "使用FAQ编辑器",
+                "content": "编辑页面，完成后导出JSON"
+              },
+              {
+                "title": "使用JSON",
+                "content": "将导出的JSON文件放入faq.html目录下的script/faq-data.json"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
