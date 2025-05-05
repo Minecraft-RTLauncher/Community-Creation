@@ -38,21 +38,35 @@ document.addEventListener('DOMContentLoaded', function () {
 
         faqData.categories.forEach(category => {
             html += `
-                <section class="faq-section">
-                    <h2 class="faq-category">${category.name}</h2>
+            <section class="faq-section">
+                <h2 class="faq-category">${category.name}</h2>
             `;
 
             category.questions.forEach(question => {
                 html += `
-                    <div class="faq-item">
-                        <div class="faq-question">
-                            <span>${question.question}</span>
-                            <svg class="faq-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                            </svg>
-                        </div>
-                        <div class="faq-answer">${formatAnswer(question.answer)}</div>
+                <div class="faq-item">
+                    <div class="faq-question">
+                        <span>${question.question}</span>
+                        <svg class="faq-toggle" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                        </svg>
                     </div>
+                    <div class="faq-answer">
+                        ${formatAnswer(question.answer)}
+                        <!-- 在每个答案底部添加评分系统 -->
+                        <div class="rating-container" 
+                             data-question-id="${encodeURIComponent(question.question)}"
+                             data-version="${question.version || '1.0.0'}">
+                            <p>这个回答对您有帮助吗?</p>
+                            <div class="stars">
+                                ${[1, 2, 3, 4, 5].map(star => `
+                                    <span class="star" data-value="${star}">★</span>
+                                `).join('')}
+                            </div>
+                            <p class="rating-feedback" style="display:none;">感谢您的反馈!</p>
+                        </div>
+                    </div>
+                </div>
                 `;
             });
 
@@ -337,6 +351,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 const container = this.closest('.rating-container');
                 const stars = container.querySelectorAll('.star');
                 const feedback = container.querySelector('.rating-feedback');
+                const questionId = container.getAttribute('data-question-id');
 
                 // 设置选中状态
                 stars.forEach((s, index) => {
@@ -350,30 +365,103 @@ document.addEventListener('DOMContentLoaded', function () {
                 // 显示反馈
                 feedback.style.display = 'block';
 
-                // 这里可以添加发送评分到服务器的代码
-                // sendRatingToServer(value);
+                // 如果评分低于3分，显示反馈输入框
+                if (value < 3) {
+                    const existingFeedbackInput = container.querySelector('.low-rating-feedback');
+                    if (!existingFeedbackInput) {
+                        const feedbackForm = document.createElement('div');
+                        feedbackForm.className = 'low-rating-feedback';
+                        feedbackForm.innerHTML = `
+                        <p>感谢您的反馈！请告诉我们哪里可以改进：</p>
+                        <textarea class="feedback-textarea" placeholder="请详细说明您的问题..."></textarea>
+                        <button class="submit-feedback-btn">提交反馈</button>
+                    `;
+                        container.appendChild(feedbackForm);
+
+                        // 提交反馈
+                        const submitBtn = feedbackForm.querySelector('.submit-feedback-btn');
+                        submitBtn.addEventListener('click', () => {
+                            const feedbackText = feedbackForm.querySelector('.feedback-textarea').value;
+                            sendRatingToServer(questionId, value, feedbackText);
+                            feedbackForm.style.display = 'none';
+                        });
+                    }
+                } else {
+                    // 高分直接提交
+                    sendRatingToServer(questionId, value);
+                }
             });
         });
     }
-});
 
-// 添加复制功能
-function copyToClipboard(button) {
-    const codeBlock = button.closest('.code-block');
-    const codeContent = codeBlock.querySelector('code').textContent;
+    // 修改sendRatingToServer函数
+    function sendRatingToServer(question, rating, feedback = null) {
+        const container = document.querySelector(`.rating-container[data-question-id="${question}"]`);
+        const version = container.getAttribute('data-version');
 
-    navigator.clipboard.writeText(codeContent).then(() => {
-        const originalText = button.textContent;
-        button.textContent = '已复制!';
-        button.style.background = '#10b981';
+        const data = {
+            question: decodeURIComponent(question),
+            version: version,
+            rating: rating
+        };
 
-        setTimeout(() => {
-            button.textContent = originalText;
-            button.style.background = '#38bdf8';
-        }, 2000);
-    }).catch(err => {
-        console.error('复制失败:', err);
-        button.textContent = '复制失败';
-        button.style.background = '#ef4444';
-    });
-}
+        if (feedback) {
+            data.feedback = feedback;
+        }
+
+        // 显示加载状态
+        const feedbackElement = container.querySelector('.rating-feedback');
+        feedbackElement.textContent = '提交中...';
+        feedbackElement.style.display = 'block';
+        feedbackElement.style.color = '#666';
+
+        fetch('https://api.hellofurry.cn/rtl/rating.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(data)
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    feedbackElement.textContent = '感谢您的反馈！';
+                    feedbackElement.style.color = '#4CAF50';
+                } else {
+                    feedbackElement.textContent = data.message || '提交失败，请重试';
+                    feedbackElement.style.color = '#F44336';
+
+                    if (data.message && data.message.includes('已经对当前版本的问题评过分了')) {
+                        const stars = container.querySelectorAll('.star');
+                        stars.forEach(star => star.classList.remove('active'));
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('评分提交错误:', error);
+                feedbackElement.textContent = '网络错误，请稍后再试';
+                feedbackElement.style.color = '#F44336';
+            });
+    }
+
+    // 添加复制功能
+    function copyToClipboard(button) {
+        const codeBlock = button.closest('.code-block');
+        const codeContent = codeBlock.querySelector('code').textContent;
+
+        navigator.clipboard.writeText(codeContent).then(() => {
+            const originalText = button.textContent;
+            button.textContent = '已复制!';
+            button.style.background = '#10b981';
+
+            setTimeout(() => {
+                button.textContent = originalText;
+                button.style.background = '#38bdf8';
+            }, 2000);
+        }).catch(err => {
+            console.error('复制失败:', err);
+            button.textContent = '复制失败';
+            button.style.background = '#ef4444';
+        });
+    }
+})

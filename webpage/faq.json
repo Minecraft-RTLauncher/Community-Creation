@@ -1,88 +1,155 @@
 {
+   "version": "1.0.1",
    "categories": [
-      {
-         "name": "安装问题",
-         "questions": [
-            {
-               "question": "如何安装RTLauncher？",
-               "answer": [
-                  "从官网下载安装包",
-                  "运行安装程序并按照提示操作",
-                  "安装完成后启动RTLauncher",
-                  "登录您的Minecraft账号",
-                  "选择游戏版本并下载，开始游戏"
-               ]
-            },
-            {
-               "question": "RTLauncher支持哪些操作系统？",
-               "answer": [
-                  "",
-                  "",
-                  ""
-               ]
-            }
-         ]
-      },
-      {
-         "name": "启动问题",
-         "questions": [
-            {
-               "question": "启动器无法启动游戏怎么办？/游戏崩溃怎么办？",
-               "answer": {
-                  "type": "grid",
-                  "items": [
-                     {
-                        "title": "检查Java安装",
-                        "content": "确保已安装正确版本的Java，并在启动器设置中配置正确的Java路径。"
-                     },
-                     {
-                        "title": "更新电脑驱动",
-                        "content": "确保您的驱动程序是最新/稳定版本。"
-                     },
-                     {
-                        "title": "查看日志文件",
-                        "content": "启动器日志/游戏日志文件可能包含错误信息。"
-                     }
-                  ]
-               }
-            }
-         ]
-      },
-      {
-         "name": "其他问题",
-         "questions": [
-            {
-               "question": "如何联系技术支持？",
-               "answer": {
-                  "type": "links",
-                  "items": [
-                     {
-                        "name": "官方QQ群",
-                        "url": "https://qm.qq.com/q/Y1ImdLdKQ6",
-                        "icon": "https://wiki.connect.qq.com/wp-content/uploads/2013/10/03_qq_symbol-1-768x921.png"
-                     },
-                     {
-                        "name": "Discord服务器",
-                        "url": "https://discord.gg/X6NHJkP3Sv",
-                        "icon": "https://images.icon-icons.com/2108/PNG/512/discord_icon_130958.png"
-                     }
-                  ]
-               }
-            },
+     {
+       "name": "技术问题",
+       "questions": [
+         {
+           "question": "如何安装软件？",
+           "version": "1.0.0",
+           "answer": {
+             "type": "steps",
+             "items": [
                {
-               "question": "遇到BUG等程序问题怎么办？",
-               "answer": {
-                  "type": "links",
-                  "items": [
-                     {
-                        "name": "GitHub Issues",
-                        "url": "https://github.com/Minecraft-RTLauncher",
-                        "icon": "https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"
-                     }
-                  ]
+                 "title": "下载安装包",
+                 "content": "从官方网站下载最新版本的安装包"
+               },
+               {
+                 "title": "运行安装程序",
+                 "content": "双击下载的安装包文件，按照向导完成安装"
+               },
+               {
+                 "title": "完成安装",
+                 "content": "安装完成后，您可以在开始菜单或应用程序文件夹中找到程序"
                }
-            }
-         ]
-      }
+             ]
+           }
+         },
+         {
+           "question": "示例代码",
+           "version": "1.0.0",
+           "answer": {
+             "type": "code",
+             "language": "JavaScript",
+             "content": "function helloWorld() {\n  console.log('Hello, world!');\n}\n\nhelloWorld();"
+           }
+         },
+         {
+           "question": "重要警告",
+           "version": "1.0.0",
+           "answer": {
+             "type": "alert",
+             "level": "danger",
+             "title": "重要安全警告",
+             "content": "请不要在公共计算机上保存您的登录信息"
+           }
+         },
+         {
+           "question": "网格布局示例",
+           "version": "1.0.0",
+           "answer": {
+             "type": "grid",
+             "items": [
+               {
+                 "title": "功能1",
+                 "content": "这是第一个功能描述"
+               },
+               {
+                 "title": "功能2",
+                 "content": "这是第二个功能描述"
+               },
+               {
+                 "title": "功能3",
+                 "content": "这是第三个功能描述"
+               }
+             ]
+           }
+         },
+         {
+           "question": "链接集合示例",
+           "version": "1.0.0",
+           "answer": {
+             "type": "links",
+             "items": [
+               {
+                 "name": "官方网站",
+                 "url": "https://example.com",
+                 "icon": "https://example.com/icon.png"
+               },
+               {
+                 "name": "帮助中心",
+                 "url": "https://help.example.com",
+                 "icon": "https://example.com/help-icon.png"
+               }
+             ]
+           }
+         }
+       ]
+     },
+     {
+       "name": "账户管理",
+       "questions": [
+         {
+           "question": "支持的浏览器",
+           "version": "1.0.0",
+           "answer": {
+             "type": "table",
+             "headers": ["浏览器", "版本", "支持状态"],
+             "rows": [
+               ["Windows", "未发布", "完全支持"],
+               ["MacOS", "未发布", "完全支持"]
+             ]
+           }
+         },
+         {
+           "question": "视频教程",
+           "version": "1.0.0",
+           "answer": {
+             "type": "video",
+             "url": "https://example.com/video.mp4",
+             "caption": "账户设置教程视频"
+           }
+         },
+         {
+           "question": "可折叠内容示例",
+           "version": "1.0.0",
+           "answer": {
+             "type": "collapse",
+             "items": [
+               {
+                 "title": "常见问题1",
+                 "content": "这是第一个常见问题的解答"
+               },
+               {
+                 "title": "常见问题2",
+                 "content": "这是第二个常见问题的解答"
+               }
+             ]
+           }
+         },
+         {
+           "question": "评分功能示例",
+           "version": "1.0.0",
+           "answer": {
+             "type": "rating",
+             "question": "这个回答对您有帮助吗？"
+           }
+         },
+         {
+           "question": "简单文本回答",
+           "version": "1.0.0",
+           "answer": "这是一个简单的文本回答示例，直接使用字符串格式。"
+         },
+         {
+           "question": "列表回答示例",
+           "version": "1.0.0",
+           "answer": [
+             "第一点说明",
+             "第二点说明",
+             "第三点说明"
+           ]
+         }
+       ]
+     }
    ]
-}
+ }

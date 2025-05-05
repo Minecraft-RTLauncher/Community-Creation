@@ -430,33 +430,65 @@ th {
     transform: rotate(180deg);
 }
 
-/* 评分系统 */
-.rating-container {
-    margin: 20px 0;
-    text-align: center;
-    color: #e2e8f0;
+/* 评分系统样式 */
+/* 更新评分反馈样式 */
+.rating-feedback {
+    display: none;
+    margin-top: 8px;
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 4px;
+    background-color: #f5f5f5;
+    transition: all 0.3s ease;
+}
+
+/* 成功状态 */
+.rating-feedback.success {
+    color: #4CAF50;
+    background-color: #e8f5e9;
+}
+
+/* 错误状态 */
+.rating-feedback.error {
+    color: #F44336;
+    background-color: #ffebee;
+}
+
+/* 加载状态 */
+.rating-feedback.loading {
+    color: #2196F3;
+    background-color: #e3f2fd;
+}
+
+.rating-container p {
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+    color: #555;
 }
 
 .stars {
-    font-size: 24px;
-    margin: 10px 0;
+    display: flex;
+    gap: 5px;
 }
 
 .star {
-    color: #94a3b8;
+    font-size: 24px;
+    color: #ccc;
     cursor: pointer;
-    transition: color 0.2s;
-    margin: 0 2px;
+    transition: color 0.2s, transform 0.2s;
 }
 
 .star:hover,
 .star.active {
-    color: #eab308;
+    color: #ffc107;
+    transform: scale(1.2);
 }
 
 .rating-feedback {
-    font-size: 0.9rem;
-    color: #38bdf8;
+    margin-top: 8px;
+    font-size: 0.85rem;
+    color: #4a90e2;
+    font-style: italic;
 }
 
 /* 视频外层容器（插入视频功能有问题） */
@@ -471,8 +503,10 @@ th {
 .video-container {
     position: relative;
     width: 100%;
-    height: auto; /* 高度自动调整 */
-    aspect-ratio: 16/9; /* 设置宽高比 */
+    height: auto;
+    /* 高度自动调整 */
+    aspect-ratio: 16/9;
+    /* 设置宽高比 */
     overflow: hidden;
     margin: 15px 0;
     border-radius: 6px;
@@ -500,7 +534,8 @@ th {
 /* 移动端优化 */
 @media (max-width: 768px) {
     .video-wrapper {
-        margin: 10px -20px; /* 在小屏幕上扩展到边缘 */
+        margin: 10px -20px;
+        /* 在小屏幕上扩展到边缘 */
         border-radius: 0;
     }
 }
