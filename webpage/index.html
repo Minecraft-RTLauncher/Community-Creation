@@ -24,105 +24,105 @@
 			});
 		});
 	</script>
-		<style>
-.nav-buttons {
-	margin-top: 40px;
-	display: flex;
-	gap: 20px;
-	justify-content: center;
-}
+	<style>
+		.nav-buttons {
+			margin-top: 40px;
+			display: flex;
+			gap: 20px;
+			justify-content: center;
+		}
 
-.nav-btn {
-	padding: 12px 25px;
-	border-radius: 15px;
-	text-decoration: none;
-	display: flex;
-	align-items: center;
-	gap: 10px;
-	transition: all 0.3s ease;
-	position: relative;
-	overflow: hidden;
-	backdrop-filter: blur(8px);
-	background: rgba(255,255,255,0.1);
-	border: 1px solid rgba(255,255,255,0.2);
-	box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-}
+		.nav-btn {
+			padding: 12px 25px;
+			border-radius: 15px;
+			text-decoration: none;
+			display: flex;
+			align-items: center;
+			gap: 10px;
+			transition: all 0.3s ease;
+			position: relative;
+			overflow: hidden;
+			backdrop-filter: blur(8px);
+			background: rgba(255, 255, 255, 0.1);
+			border: 1px solid rgba(255, 255, 255, 0.2);
+			box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+		}
 
-.nav-btn span {
-	color: white;
-	font-weight: 500;
-	position: relative;
-	z-index: 1;
-}
+		.nav-btn span {
+			color: white;
+			font-weight: 500;
+			position: relative;
+			z-index: 1;
+		}
 
-.btn-icon {
-	width: 20px;
-	height: 20px;
-	fill: white;
-	transition: transform 0.3s ease;
-}
+		.btn-icon {
+			width: 20px;
+			height: 20px;
+			fill: white;
+			transition: transform 0.3s ease;
+		}
 
-/* 按钮悬浮效果 */
-.nav-btn:hover {
-	transform: translateY(-3px);
-	box-shadow: 0 8px 25px rgba(78, 205, 196, 0.4);
-}
+		/* 按钮悬浮效果 */
+		.nav-btn:hover {
+			transform: translateY(-3px);
+			box-shadow: 0 8px 25px rgba(78, 205, 196, 0.4);
+		}
 
-.nav-btn:hover::after {
-	opacity: 0.1;
-}
+		.nav-btn:hover::after {
+			opacity: 0.1;
+		}
 
-.nav-btn:hover .btn-icon {
-	transform: scale(1.15);
-}
+		.nav-btn:hover .btn-icon {
+			transform: scale(1.15);
+		}
 
-.msg-wall-btn {
-	--btn-color: var(--primary-color);
-}
+		.msg-wall-btn {
+			--btn-color: var(#ff6b6b);
+		}
 
-.faq-btn {
-	--btn-color: var(--secondary-color);
-}
+		.faq-btn {
+			--btn-color: var(#4ecdc4);
+		}
 
-.nav-btn::after {
-	content: '';
-	position: absolute;
-	top: 0;
-	left: 0;
-	width: 100%;
-	height: 100%;
-	background: linear-gradient(45deg,
-		var(--btn-color) 0%,
-		rgba(255,255,255,0.2) 100%);
-	opacity: 0.3;
-	transition: opacity 0.3s ease;
-}
+		.nav-btn::after {
+			content: '';
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			background: linear-gradient(45deg,
+			var(--btn-color) 0%,
+			rgba(255, 255, 255, 0.2) 100%);
+			opacity: 0.3;
+			transition: opacity 0.3s ease;
+		}
 
-/* 手机适配 */
-@media (max-width: 768px) {
-	.nav-buttons {
-		flex-direction: column;
-		width: 80%;
-		margin: 30px auto 0;
-	}
+		/* 手机适配 */
+		@media (max-width: 768px) {
+			.nav-buttons {
+				flex-direction: column;
+				width: 80%;
+				margin: 30px auto 0;
+			}
 
-	.nav-btn {
-		justify-content: center;
-		padding: 15px 20px;
-	}
-}
-</style>
+			.nav-btn {
+				justify-content: center;
+				padding: 15px 20px;
+			}
+		}
+	</style>
 </head>
 
 <body>
-	<div class="container">
-		<div class="logo">
-			<div class="logo-inner">
-				<img src="assets/logo.svg" alt="">
-			</div>
+<div class="container">
+	<div class="logo">
+		<div class="logo-inner">
+			<img src="assets/logo.svg" alt="">
 		</div>
-		<h1 class="title">暑期即将发布，敬请期待</h1>
 	</div>
+	<h1 class="title">暑期即将发布，敬请期待</h1>
+</div>
 
 <div class="social-links container">
 	<a href="https://qm.qq.com/q/Y1ImdLdKQ6" target="_blank" class="qq-link">
@@ -134,19 +134,22 @@
 </div>
 
 <div class="danmaku-container"></div>
-	<div class="danmaku-container"></div>
-	<div class="footer-beian">
-        <a href="https://beian.miit.gov.cn/" target="_blank">闽ICP备2024058720号-2</a>
-    </div>
+<div class="footer-beian">
+	<a href="https://beian.miit.gov.cn/" target="_blank">闽ICP备2024058720号-2</a>
+</div>
 </body>
-	<div class="container">
+<div class="container">
 	<div class="nav-buttons">
 		<a href="msg-wall.html" class="nav-btn msg-wall-btn">
-			<svg class="btn-icon" viewBox="0 0 24 24"><path d="M2 6h20v12H2V6zm2 2v8h16V8H4zm4 3h8v2H8v-2z"/></svg>
+			<svg class="btn-icon" viewBox="0 0 24 24">
+				<path d="M2 6h20v12H2V6zm2 2v8h16V8H4zm4 3h8v2H8v-2z"/>
+			</svg>
 			<span>留言墙</span>
 		</a>
 		<a href="faq.html" class="nav-btn faq-btn">
-			<svg class="btn-icon" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/></svg>
+			<svg class="btn-icon" viewBox="0 0 24 24">
+				<path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 17h-2v-2h2v2zm2.07-7.75l-.9.92C13.45 12.9 13 13.5 13 15h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H8c0-2.21 1.79-4 4-4s4 1.79 4 4c0 .88-.36 1.68-.93 2.25z"/>
+			</svg>
 			<span>常见问题</span>
 		</a>
 	</div>
