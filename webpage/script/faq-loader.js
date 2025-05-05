@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // 加载FAQ数据
     fetch('./faq_data.json')
         .then(response => {
@@ -12,6 +12,8 @@ document.addEventListener('DOMContentLoaded', function() {
             setupSearch(data);
             setupToggle();
             setupSearchAnimation();
+            setupCollapse();
+            setupRating();
         })
         .catch(error => {
             console.error('加载FAQ时出错:', error);
@@ -26,20 +28,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // 渲染FAQ内容
     function renderFAQ(faqData) {
         const faqContainer = document.getElementById('faq-container');
-        
+
         if (!faqData || !faqData.categories || faqData.categories.length === 0) {
             faqContainer.innerHTML = '<p>暂无常见问题。</p>';
             return;
         }
 
         let html = '';
-        
+
         faqData.categories.forEach(category => {
             html += `
                 <section class="faq-section">
                     <h2 class="faq-category">${category.name}</h2>
             `;
-            
+
             category.questions.forEach(question => {
                 html += `
                     <div class="faq-item">
@@ -53,10 +55,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     </div>
                 `;
             });
-            
+
             html += `</section>`;
         });
-        
+
         faqContainer.innerHTML = html;
     }
 
@@ -89,9 +91,104 @@ document.addEventListener('DOMContentLoaded', function() {
                         `).join('')}
                     </div>
                 `;
+            } else if (answer.type === 'code') {
+                return `
+                    <div class="code-block">
+                        <div class="code-header">
+                            <span>${answer.language || '代码'}</span>
+                            <button class="copy-btn" onclick="copyToClipboard(this)">复制</button>
+                        </div>
+                        <pre><code>${answer.content}</code></pre>
+                    </div>
+                `;
+            } else if (answer.type === 'alert') {
+                return `
+                    <div class="alert alert-${answer.level || 'info'}">
+                        <strong>${answer.title || (answer.level === 'danger' ? '警告' : '提示')}</strong>
+                        ${answer.content}
+                    </div>
+                `;
+            } else if (answer.type === 'steps') {
+                return `
+                    <div class="steps-container">
+                        ${answer.items.map((step, index) => `
+                            <div class="step">
+                                <div class="step-number">${index + 1}</div>
+                                <div class="step-content">
+                                    <h4>${step.title}</h4>
+                                    ${step.content}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else if (answer.type === 'table') {
+                return `
+                    <div class="responsive-table">
+                        <table>
+                            ${answer.headers ? `
+                                <thead>
+                                    <tr>
+                                        ${answer.headers.map(header => `<th>${header}</th>`).join('')}
+                                    </tr>
+                                </thead>
+                            ` : ''}
+                            <tbody>
+                                ${answer.rows.map(row => `
+                                    <tr>
+                                        ${row.map(cell => `<td>${cell}</td>`).join('')}
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+            } else if (answer.type === 'video') {
+                return `
+                    <div class="video-wrapper">
+                        <div class="video-container">
+                            <iframe 
+                                src="${answer.url}?autoplay=0&controls=1" 
+                                frameborder="0" 
+                                allowfullscreen
+                                allow="accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                loading="lazy">
+                            </iframe>
+                        </div>
+                        ${answer.caption ? `<p class="video-caption">${answer.caption}</p>` : ''}
+                    </div>
+                `;
+            } else if (answer.type === 'collapse') {
+                return `
+                    <div class="collapse-group">
+                        ${answer.items.map(item => `
+                            <div class="collapse-item">
+                                <button class="collapse-header">
+                                    ${item.title}
+                                    <svg class="collapse-icon" viewBox="0 0 24 24">
+                                        <path d="M19 9l-7 7-7-7" />
+                                    </svg>
+                                </button>
+                                <div class="collapse-content">${item.content}</div>
+                            </div>
+                        `).join('')}
+                    </div>
+                `;
+            } else if (answer.type === 'rating') {
+                return `
+                    <div class="rating-container">
+                        <p>${answer.question || '这篇文章对您有帮助吗?'}</p>
+                        <div class="stars">
+                            ${[1, 2, 3, 4, 5].map(star => `
+                                <span class="star" data-value="${star}">★</span>
+                            `).join('')}
+                        </div>
+                        <p class="rating-feedback" style="display:none;">感谢您的反馈!</p>
+                    </div>
+                `;
             }
         }
-        
+
         return `<p>${answer}</p>`;
     }
 
@@ -101,7 +198,7 @@ document.addEventListener('DOMContentLoaded', function() {
             question.addEventListener('click', () => {
                 const item = question.parentElement;
                 item.classList.toggle('active');
-                
+
                 // 平滑滚动到问题位置
                 item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             });
@@ -113,70 +210,70 @@ document.addEventListener('DOMContentLoaded', function() {
         const searchInput = document.getElementById('faq-search');
         const searchBtn = document.getElementById('search-btn');
         const faqContainer = document.getElementById('faq-container');
-        
+
         function performSearch() {
             const query = searchInput.value.toLowerCase().trim();
-            
+
             if (!query) {
                 renderFAQ(faqData);
                 setupToggle();
                 return;
             }
-            
+
             const filteredData = {
                 categories: faqData.categories.map(category => ({
                     name: category.name,
                     questions: category.questions.filter(question => {
                         // 检查问题标题
                         const questionMatch = question.question.toLowerCase().includes(query);
-                        
+
                         // 检查答案内容
                         let answerMatch = false;
-                        
+
                         if (typeof question.answer === 'string') {
                             answerMatch = question.answer.toLowerCase().includes(query);
                         } else if (Array.isArray(question.answer)) {
-                            answerMatch = question.answer.some(item => 
+                            answerMatch = question.answer.some(item =>
                                 item.toLowerCase().includes(query)
                             );
                         } else if (typeof question.answer === 'object') {
                             if (question.answer.type === 'grid') {
-                                answerMatch = question.answer.items.some(item => 
-                                    item.title.toLowerCase().includes(query) || 
+                                answerMatch = question.answer.items.some(item =>
+                                    item.title.toLowerCase().includes(query) ||
                                     item.content.toLowerCase().includes(query)
                                 );
                             } else if (question.answer.type === 'links') {
-                                answerMatch = question.answer.items.some(link => 
-                                    link.name.toLowerCase().includes(query) || 
+                                answerMatch = question.answer.items.some(link =>
+                                    link.name.toLowerCase().includes(query) ||
                                     (link.url && link.url.toLowerCase().includes(query))
                                 );
                             }
                         }
-                        
+
                         return questionMatch || answerMatch;
                     })
                 })).filter(category => category.questions.length > 0)
             };
-            
+
             renderFAQ(filteredData);
             setupToggle();
-            
+
             // 高亮匹配的文本
             document.querySelectorAll('.faq-question span, .faq-answer p, .faq-answer li, .faq-answer h3, .faq-answer a span').forEach(element => {
                 const text = element.textContent;
-                const html = text.replace(new RegExp(query, 'gi'), match => 
+                const html = text.replace(new RegExp(query, 'gi'), match =>
                     `<span class="highlight">${match}</span>`
                 );
                 element.innerHTML = html;
             });
         }
-        
-        searchInput.addEventListener('keyup', function(e) {
+
+        searchInput.addEventListener('keyup', function (e) {
             if (e.key === 'Enter') {
                 performSearch();
             }
         });
-        
+
         searchBtn.addEventListener('click', performSearch);
     }
 
@@ -184,21 +281,21 @@ document.addEventListener('DOMContentLoaded', function() {
     function setupSearchAnimation() {
         const searchInput = document.getElementById('faq-search');
         const searchBtn = document.getElementById('search-btn');
-        
+
         // 聚焦时动画
         searchInput.addEventListener('focus', () => {
             searchInput.style.borderColor = '#4a90e2';
             searchInput.style.boxShadow = '0 0 0 2px rgba(74, 144, 226, 0.2)';
             searchBtn.style.transform = 'scale(1.05)';
         });
-        
+
         // 失去焦点时动画
         searchInput.addEventListener('blur', () => {
             searchInput.style.borderColor = '#ddd';
             searchInput.style.boxShadow = 'none';
             searchBtn.style.transform = 'scale(1)';
         });
-        
+
         // 输入时动画
         searchInput.addEventListener('input', () => {
             if (searchInput.value.trim() !== '') {
@@ -210,4 +307,73 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    // 设置折叠功能
+    function setupCollapse() {
+        document.querySelectorAll('.collapse-header').forEach(header => {
+            header.addEventListener('click', function () {
+                const item = this.closest('.collapse-item');
+                const content = item.querySelector('.collapse-content');
+                const icon = this.querySelector('.collapse-icon');
+
+                item.classList.toggle('active');
+
+                if (item.classList.contains('active')) {
+                    content.style.maxHeight = content.scrollHeight + 'px';
+                    icon.style.transform = 'rotate(180deg)';
+                } else {
+                    content.style.maxHeight = '0';
+                    icon.style.transform = 'rotate(0)';
+                }
+            });
+        });
+    }
+
+    // 设置评分功能
+    function setupRating() {
+        document.querySelectorAll('.star').forEach(star => {
+            star.addEventListener('click', function () {
+                const value = parseInt(this.getAttribute('data-value'));
+                const container = this.closest('.rating-container');
+                const stars = container.querySelectorAll('.star');
+                const feedback = container.querySelector('.rating-feedback');
+
+                // 设置选中状态
+                stars.forEach((s, index) => {
+                    if (index < value) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
+                });
+
+                // 显示反馈
+                feedback.style.display = 'block';
+
+                // 这里可以添加发送评分到服务器的代码
+                // sendRatingToServer(value);
+            });
+        });
+    }
 });
+
+// 添加复制功能
+function copyToClipboard(button) {
+    const codeBlock = button.closest('.code-block');
+    const codeContent = codeBlock.querySelector('code').textContent;
+
+    navigator.clipboard.writeText(codeContent).then(() => {
+        const originalText = button.textContent;
+        button.textContent = '已复制!';
+        button.style.background = '#10b981';
+
+        setTimeout(() => {
+            button.textContent = originalText;
+            button.style.background = '#38bdf8';
+        }, 2000);
+    }).catch(err => {
+        console.error('复制失败:', err);
+        button.textContent = '复制失败';
+        button.style.background = '#ef4444';
+    });
+}
