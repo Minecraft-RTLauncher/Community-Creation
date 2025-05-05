@@ -1,0 +1,66 @@
+{
+  "version": "1.0.1",
+  "categories": [
+    {
+      "name": "关于如何添加FAQ",
+      "questions": [
+        {
+          "question": "如何添加FAQ",
+          "version": "1.0.0",
+          "answer": {
+            "type": "steps",
+            "items": [
+              {
+                "title": "使用FAQ编辑器",
+                "content": "编辑页面，完成后导出JSON"
+              },
+              {
+                "title": "使用JSON",
+                "content": "将导出的JSON文件放入faq.html目录下的script/faq-data.json"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "后端",
+      "questions": [
+        {
+          "question": "README",
+          "version": "1.0.0",
+          "answer": "后端（PHP）是用来存储用户的评分（SQL）的。等下发\n后面应该还会做一个后台面板来管理🤔\n现在我是放在我的主机上的\n——By Aria 2025/5/5 10:55"
+        }
+      ]
+    },
+    {
+      "name": "About",
+      "questions": [
+        {
+          "question": "README",
+          "version": "1.0.0",
+          "answer": "目前的FAQ还只能算一个半成品，但是要上学了（悲），下周再来搞~\n——By Aria 2025/5/5 10:57"
+        },
+        {
+          "question": "版本是来干嘛的",
+          "version": "1.0.0",
+          "answer": "不知道，还不完善，不知道为什么后端获取的用户IP一直是一个，下周来优化。现在FAQ换行的功能也有些问题\n本来是想用来防止一个用户一直给某个FAQ评分，然后当版本不同就可以再评分一次\n<br>\n感觉我说的话好别扭：（\n——By Aria 2025/5/5 11:00"
+        },
+        {
+          "question": "如何下载FAQ编辑器？",
+          "version": "1.0.0",
+          "answer": {
+            "type": "links",
+            "items": [
+              {
+                "name": "FAQ编辑器",
+                "url": "https://github.com/FurryAria/FAQ-Editor",
+                "icon": "https://s21.ax1x.com/2025/01/15/pEFld6P.md.png"
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

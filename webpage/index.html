@@ -12,6 +12,18 @@
 	<script src="./script/index.js"></script>
 	<script src="./script/particle.js"></script>
 	<script src="./script/danmaku.js"></script>
+	<script src="./script/logo3Danimation.js"></script>
+	<!-- 禁止图片拖拽 -->
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			const images = document.querySelectorAll('img');
+			images.forEach(img => {
+				img.addEventListener('dragstart', function (e) {
+					e.preventDefault();
+				});
+			});
+		});
+	</script>
 </head>
 
 <body>

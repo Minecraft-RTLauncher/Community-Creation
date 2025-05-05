@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RTLauncher - 常见问题解答</title>
+    <link rel="stylesheet" href="./stylesheet/faq.css">
+</head>
+
+<body>
+    <div class="container">
+        <header class="page-header">
+            <h1 class="page-title">常见问题解答</h1>
+            <p class="page-subtitle">遇到问题？也许这里能找到答案</p>
+            <div class="search-box">
+                <input type="text" id="faq-search" placeholder="搜索问题...">
+                <button id="search-btn">搜索</button>
+            </div>
+        </header>
+
+        <main id="faq-container">
+            <!-- FAQ内容将通过JavaScript动态加载 -->
+            <div class="loading-spinner">
+                <div class="spinner"></div>
+                <p>加载常见问题中...</p>
+            </div>
+        </main>
+    </div>
+
+    <script src="./script/faq-loader.js"></script>
+</body>
+
+</html>
