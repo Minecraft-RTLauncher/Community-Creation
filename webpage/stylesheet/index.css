@@ -40,11 +40,10 @@ body::after {
 
 /* 中央Logo */
 .logo {
-	width: 150px;
-	height: 150px;
-	margin: 0 auto 30px;
-	border-radius: 20px;
-	box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+	width: 9em;
+	margin: 0 auto;
+	border-radius: 2em;
+	/*box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);*/
 	position: relative;
 	transition: transform 0.3s ease;
 }
@@ -74,7 +73,6 @@ body::after {
 .title {
 	color: white;
 	font-size: 2.5rem;
-	text-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
 	letter-spacing: 2px;
 	position: relative;
 	margin-top: 20px;
@@ -83,7 +81,7 @@ body::after {
 .title::after {
 	content: "RTLauncher";
 	position: absolute;
-	bottom: -30px;
+	bottom: -2em;
 	left: 50%;
 	transform: translateX(-50%);
 	font-size: 1.2rem;
@@ -94,17 +92,17 @@ body::after {
 /* 外链 */
 .social-links {
 	position: fixed;
-	bottom: 30px;
+	bottom: 2.5em;
 	width: 100%;
 	display: flex;
 	justify-content: center;
-	gap: 40px;
+	gap: 4vw;
 	z-index: 2;
 }
 
 .social-links img {
-	width: 48px;
-	height: 48px;
+	width: 3em;
+	height: 3em;
 	transition: all 0.3s ease;
 	border-radius: 50%;
 	background: rgba(255, 255, 255, 0.1);
