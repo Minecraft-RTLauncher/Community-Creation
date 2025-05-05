@@ -1,0 +1,88 @@
+{
+   "categories": [
+      {
+         "name": "安装问题",
+         "questions": [
+            {
+               "question": "如何安装RTLauncher？",
+               "answer": [
+                  "从官网下载安装包",
+                  "运行安装程序并按照提示操作",
+                  "安装完成后启动RTLauncher",
+                  "登录您的Minecraft账号",
+                  "选择游戏版本并下载，开始游戏"
+               ]
+            },
+            {
+               "question": "RTLauncher支持哪些操作系统？",
+               "answer": [
+                  "",
+                  "",
+                  ""
+               ]
+            }
+         ]
+      },
+      {
+         "name": "启动问题",
+         "questions": [
+            {
+               "question": "启动器无法启动游戏怎么办？/游戏崩溃怎么办？",
+               "answer": {
+                  "type": "grid",
+                  "items": [
+                     {
+                        "title": "检查Java安装",
+                        "content": "确保已安装正确版本的Java，并在启动器设置中配置正确的Java路径。"
+                     },
+                     {
+                        "title": "更新电脑驱动",
+                        "content": "确保您的驱动程序是最新/稳定版本。"
+                     },
+                     {
+                        "title": "查看日志文件",
+                        "content": "启动器日志/游戏日志文件可能包含错误信息。"
+                     }
+                  ]
+               }
+            }
+         ]
+      },
+      {
+         "name": "其他问题",
+         "questions": [
+            {
+               "question": "如何联系技术支持？",
+               "answer": {
+                  "type": "links",
+                  "items": [
+                     {
+                        "name": "官方QQ群",
+                        "url": "https://qm.qq.com/q/Y1ImdLdKQ6",
+                        "icon": "https://wiki.connect.qq.com/wp-content/uploads/2013/10/03_qq_symbol-1-768x921.png"
+                     },
+                     {
+                        "name": "Discord服务器",
+                        "url": "https://discord.gg/X6NHJkP3Sv",
+                        "icon": "https://images.icon-icons.com/2108/PNG/512/discord_icon_130958.png"
+                     }
+                  ]
+               }
+            },
+               {
+               "question": "遇到BUG等程序问题怎么办？",
+               "answer": {
+                  "type": "links",
+                  "items": [
+                     {
+                        "name": "GitHub Issues",
+                        "url": "https://github.com/Minecraft-RTLauncher",
+                        "icon": "https://github.githubassets.com/assets/GitHub-Mark-ea2971cee799.png"
+                     }
+                  ]
+               }
+            }
+         ]
+      }
+   ]
+}

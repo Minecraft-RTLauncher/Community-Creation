@@ -1,0 +1,48 @@
+{
+  "categories": [
+    {
+      "name": "你好",
+      "questions": [
+        {
+          "question": "你是谁",
+          "answer": {
+            "type": "grid",
+            "items": [
+              {
+                "title": "我说",
+                "content": "是是是是是"
+              },
+              {
+                "title": "福娃发我",
+                "content": "ada"
+              }
+            ]
+          }
+        },
+        {
+          "question": "元素",
+          "answer": {
+            "type": "links",
+            "items": [
+              {
+                "name": "我说",
+                "url": "https://hellofurry.cn",
+                "icon": ""
+              }
+            ]
+          }
+        },
+        {
+          "question": "新问题",
+          "answer": [
+            "saaa",
+            "saaa",
+            "aaa",
+            "bbb",
+            "ccc"
+          ]
+        }
+      ]
+    }
+  ]
+}
