@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     // 加载FAQ数据
-    fetch('./faq_data.json')
+    fetch('./script/faq-data.json')
         .then(response => {
             if (!response.ok) {
                 throw new Error('网络响应不正常');
