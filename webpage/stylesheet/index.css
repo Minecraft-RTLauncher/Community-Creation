@@ -229,3 +229,19 @@ body::after {
 		padding: 15px 20px;
 	}
 }
+
+/* 备案 */
+.footer-beian {
+	position: fixed;
+	bottom: 1em;
+	z-index: 2;
+}
+
+.footer-beian a, .footer-beian a:visited {
+	color: #ffffff;
+	text-decoration: none;
+}
+
+.footer-beian a:hover {
+	text-decoration: underline;
+}
