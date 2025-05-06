@@ -1,0 +1,99 @@
+.top-bar {
+    font-family: 'Segoe UI', sans-serif;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+    
+    z-index: 1000 !important; /* 强制层级 */
+    pointer-events: auto !important; /* 确保可交互 */
+}
+
+.top-logo {
+    color: white;
+    font-weight: bold;
+    font-size: 1.5rem;
+    text-decoration: none;
+}
+
+.menu-btn {
+    width: 30px;
+    height: 20px;
+    position: relative;
+    cursor: pointer;
+    z-index: 1100;
+}
+
+.menu-btn span {
+    position: absolute;
+    height: 2px;
+    width: 100%;
+    background: white;
+    transition: all 0.3s;
+}
+
+.menu-btn span:nth-child(1) { top: 0; }
+.menu-btn span:nth-child(2) { top: 50%; transform: translateY(-50%); }
+.menu-btn span:nth-child(3) { bottom: 0; }
+
+.menu-btn.active span:nth-child(1) {
+    transform: rotate(45deg) translate(6px, 6px);
+}
+.menu-btn.active span:nth-child(2) {
+    opacity: 0;
+}
+.menu-btn.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(6px, -6px);
+}
+
+.menu-panel {
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 250px;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    padding: 80px 20px 20px;
+    transition: all 0.3s;
+    z-index: 1050 !important;
+}
+
+.menu-panel.active {
+    right: 0;
+}
+
+.menu-list {
+    list-style: none;
+    color: white;
+}
+
+.menu-list li {
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    transition: background 0.3s;
+    text-align: right;
+}
+
+.menu-list li:hover {
+    background: rgba(255, 255, 255, 0.1);
+}
+.meun-list-img {
+    transform: translateY(10px);
+}
+
+.page-content {
+    margin-top: 70px; /* 留出顶栏空间 */
+    position: relative;
+    z-index: 500; /* 低于菜单层级 */
+}
