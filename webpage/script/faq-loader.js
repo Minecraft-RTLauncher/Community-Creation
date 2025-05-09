@@ -1,3 +1,36 @@
+//版权显示
+/* 样式代码 */
+var styleTitle1 = `
+font-size: 20px;
+font-weight: 600;
+color: rgb(244,167,89);
+`
+var styleTitle2 = `
+font-style: oblique;
+font-size:14px;
+color: rgb(244,167,89);
+font-weight: 400;
+`
+var styleContent = `
+color: rgb(30,152,255);
+`
+
+/* 内容代码 */
+var title1 = 'RTL'
+var title2 = 'FAQ常见问题页面'
+var content = `
+版 本 号：20250510070906
+版本日期：2025年5月10日07:09:06
+
+RTL保留对此板块信息的最终解释权.
+ 
+官网:  https://www.rsdaily.com/
+`
+console.log(`%c${title1} %c${title2}
+%c${content}`, styleTitle1, styleTitle2, styleContent)
+
+//版权信息结束
+
 document.addEventListener('DOMContentLoaded', function () {
     // 加载FAQ数据
     fetch('./script/faq-data.json')

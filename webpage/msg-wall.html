@@ -1,44 +1,68 @@
+<!--2025年5月10日 程序格式化代码-->
+<!--
+                              _ooOoo_
+                             o8888888o
+                             88" . "88
+                             (| -_- |)
+                             O\  =  /O
+                          ____/`---'\____
+                        .'  \\|     |//  `.
+                       /  \\|||  :  |||//  \
+                      /  _||||| -:- |||||-  \
+                      |   | \\\  -  /// |   |
+                      | \_|  ''\---/''  |   |
+                      \  .-\__  `-`  ___/-. /
+                    ___`. .'  /--.--\  `. . __
+                 ."" '<  `.___\_<|>_/___.'  >'"".
+                | | :  `- \`.;`\ _ /`;.`/ - ` : | |
+                \  \ `-.   \_ __\ /__ _/   .-` /  /
+           ======`-.____`-.___\_____/___.-`____.-'======
+                              `=---='
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+                      佛祖保佑        永无BUG
+-->
 <!DOCTYPE html>
 <html lang="zh-CN" class="scroll-smooth">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>留言板</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="./assets/alpinejs/cdn.min.js" defer></script>
     <script src="./assets/canvas-confetti/confetti.browser.min.js"></script>
     <script src="./script/msg-wall.js"></script>
-    <link rel="icon" type="image/png" href="new.png">
-    <link rel="stylesheet" href="./stylesheet/msg-wall.css">
+    <link rel="icon" type="image/png" href="new.png" />
+    <link rel="stylesheet" href="./stylesheet/msg-wall.css" />
 </head>
 
-<body class="bg-gray-900 text-gray-100 font-sans" style="background-image: url('assets/faqbg.svg'); 
-             background-size: cover; 
-             background-attachment: fixed;
-             background-position: center;">
-    <!-- 添加这一行 -->
+<body class="bg-gray-900 text-gray-100 font-sans" style="
+      background-image: url(&quot;assets/faqbg.svg&quot;);
+      background-size: cover;
+      background-attachment: fixed;
+      background-position: center;
+    ">
     <div x-data="messageBoard()" x-init="fetchMessages(true)" class="min-h-screen py-8 px-4">
         <!-- 标题 -->
-        <div class="text-center mb-8 animate-fade-in">
+        <div class="text-center mb-8 animateFadeIn">
             <h1 class="text-5xl font-bold mb-2 text-green-400">留言板</h1>
             <p class="text-gray-300">分享你的想法和创意</p>
         </div>
 
         <!-- 留言表单 -->
         <div
-            class="max-w-2xl mx-auto glass-effect bg-gray-800 bg-opacity-80 rounded-lg p-6 mb-8 shadow-lg border-2 border-green-600 animate-slide-up">
+            class="max-w-2xl mx-auto glassEffect bgGray800 bgOpacity80 rounded-lg p-6 mb-8 shadow-lg border-2 border-green-600 animateSlideUp">
             <h2 class="text-2xl font-bold mb-4 text-green-400">发布新留言</h2>
-            <form @submit.prevent="submitMessage" class="space-y-4">
+            <form @submit.prevent="submitMessage" class="spaceY4">
                 <div>
                     <label for="username" class="block text-sm font-medium text-gray-300">用户名</label>
                     <input type="text" id="username" x-model="form.username" required
-                        class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+                        class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" />
                 </div>
                 <div>
-                    <label for="qq" class="block text-sm font-medium text-gray-300">QQ号</label>
+                    <label for="qq" class="block text-sm font-medium text-gray-300">QQ号（用于获取用户头像）</label>
                     <input type="text" id="qq" x-model="form.qq" required
-                        class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
+                        class="mt-1 block w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" />
                 </div>
                 <div>
                     <label for="content" class="block text-sm font-medium text-gray-300">留言内容</label>
@@ -50,10 +74,9 @@
                     <label for="captcha" class="block text-sm font-medium text-gray-300">验证码</label>
                     <div class="flex items-center space-x-2">
                         <input type="text" id="captcha" x-model="form.captcha" required
-                            class="mt-1 block w-32 px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500">
-                        <div class="captcha-container" @click="generateCaptcha">
-                            <!-- 使用Canvas渲染验证码 -->
-                            <canvas x-ref="captchaCanvas" width="120" height="40" class="captcha-image"></canvas>
+                            class="mt-1 block w-32 px-3 py-2 bg-gray-700 border border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-green-500 focus:border-green-500" />
+                        <div class="captchaContainer" @click="generateCaptcha">
+                            <canvas x-ref="captchaCanvas" width="120" height="40" class="captchaImage"></canvas>
                         </div>
                     </div>
                 </div>
@@ -75,20 +98,18 @@
             </form>
         </div>
 
-        <!-- 留言列表 - 修改为瀑布流布局 -->
+        <!-- 留言列表 -->
         <div class="max-w-7xl mx-auto px-4">
-            <div class="masonry-grid">
+            <div class="masonryGrid">
                 <template x-for="(message, index) in messages" :key="index">
-                    <div class="masonry-item glass-effect bg-gray-800 bg-opacity-80 rounded-xl p-6 shadow-lg border border-green-600 transition-all duration-300 hover:shadow-xl hover:border-green-400"
+                    <div class="masonryItem glassEffect bgGray800 bgOpacity80 rounded-xl p-6 shadow-lg border border-green-600 transition-all duration-300 hover:shadow-xl hover:border-green-400"
                         :style="`animation-delay: ${index * 0.05}s`">
                         <div class="flex items-start space-x-4">
-                            <!-- 头像 -->
                             <img loading="lazy"
                                 :src="`http://q.qlogo.cn/headimg_dl?dst_uin=${message.qq}&spec=100&img_type=jpg`"
                                 @error="setDefaultAvatar($event)"
-                                class="w-12 h-12 rounded-full border-2 border-green-500 object-cover transition-all duration-300">
+                                class="w-12 h-12 rounded-full border-2 border-green-500 object-cover transition-all duration-300" />
 
-                            <!-- 内容 -->
                             <div class="flex-1 min-w-0">
                                 <div class="flex items-center justify-between">
                                     <div class="truncate">
@@ -107,7 +128,7 @@
                                         </span>
                                     </div>
                                 </div>
-                                <div class="mt-3 text-gray-300 message-content" x-text="message.content"></div>
+                                <div class="mt-3 text-gray-300 messageContent" x-text="message.content"></div>
                                 <div class="mt-4 flex items-center space-x-4">
                                     <button @click="likeMessage(message)"
                                         class="flex items-center text-sm text-gray-400 hover:text-yellow-400 transition transform hover:scale-110">
