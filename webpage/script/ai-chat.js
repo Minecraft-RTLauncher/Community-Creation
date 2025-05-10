@@ -1,6 +1,6 @@
-//API_URL = 'https://api2.hellofurry.cn/faq-ai.php';
-API_URL = 'http://localhost:3000/faq-ai.php';
-TICKET_API_URL = 'http://localhost:3000/';
+API_URL = 'https://api2.hellofurry.cn/faq-ai.php';
+//API_URL = 'http://localhost:3000/faq-ai.php';
+TICKET_API_URL = 'https://api2.hellofurry.cn/';
 
 document.addEventListener('DOMContentLoaded', () => {
     const chatToggle = document.querySelector('.ai-chat-toggle');
