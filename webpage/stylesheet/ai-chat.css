@@ -433,6 +433,126 @@
 }
 
 @keyframes alertSlide {
-    from { transform: translateX(100%); }
-    to { transform: translateX(0); }
+    from {
+        transform: translateX(100%);
+    }
+
+    to {
+        transform: translateX(0);
+    }
+}
+
+/* 手机端适配 - 添加媒体查询 */
+@media (max-width: 768px) {
+    .ai-chat-container {
+        width: 90vw;
+        max-width: 100%;
+        right: 5vw;
+        bottom: 80px;
+        max-height: 60vh;
+    }
+
+    .ai-chat-toggle {
+        width: 50px;
+        height: 50px;
+        bottom: 20px;
+        right: 20px;
+    }
+
+    /* 调整按钮位置防止重叠 */
+    .restart-btn,
+    .ticket-btn {
+        position: absolute;
+        top: 10px;
+        padding: 5px 10px;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        color: white;
+    }
+
+    /* 按钮容器 */
+    .ai-chat-header {
+        position: relative;
+        /* 确保按钮可以相对于标题栏定位 */
+        padding-right: 120px;
+        /* 为按钮留出空间 */
+    }
+
+    /* 按钮组样式 */
+    .button-group {
+        position: absolute;
+        bottom: 10px;
+        left: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        padding: 0 16px;
+    }
+
+    /* 输入区域调整 */
+    .ai-chat-input {
+        flex-direction: column;
+    }
+
+    #chat-input {
+        margin-right: 0;
+        margin-bottom: 8px;
+    }
+
+    /* 消息区域调整 */
+    .message {
+        max-width: 90%;
+    }
+}
+
+@media (max-width: 768px) {
+
+    /* 统一按钮容器 */
+    .ai-chat-header {
+        position: relative;
+        padding-bottom: 16px;
+    }
+
+    /* 按钮组容器 */
+    .header-buttons {
+        position: absolute;
+        right: 16px;
+        /* 与标题栏右侧保持距离 */
+        top: 50%;
+        transform: translateY(-50%);
+        /* 垂直居中 */
+        display: flex;
+        gap: 8px;
+        /* 按钮间距 */
+    }
+
+
+    /* 调整单个按钮样式 */
+    .restart-btn,
+    .ticket-btn {
+        position: static;
+        /* 取消绝对定位 */
+        margin: 0;
+        padding: 6px 10px;
+        font-size: 12px;
+    }
+
+    /* 确保关闭按钮不重叠 */
+    .close-btn {
+        order: 1;
+        margin-left: auto;
+    }
+}
+
+.ai-chat-toggle svg {
+    width: 60%;
+    /* 缩小图标尺寸 */
+    height: 60%;
+    pointer-events: none;
+    /* 防止图标干扰点击 */
 }

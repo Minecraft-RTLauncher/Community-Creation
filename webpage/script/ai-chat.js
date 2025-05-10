@@ -374,3 +374,17 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('resize', adjustChatPosition);
     adjustChatPosition();
 });
+
+// 在ai-chat.js中添加
+function adjustLayoutForMobile() {
+    const chatContainer = document.querySelector('.ai-chat-container');
+    if (window.innerWidth <= 768) {
+        chatContainer.classList.add('mobile-view');
+    } else {
+        chatContainer.classList.remove('mobile-view');
+    }
+}
+
+// 初始检查和监听
+window.addEventListener('resize', adjustLayoutForMobile);
+adjustLayoutForMobile();
