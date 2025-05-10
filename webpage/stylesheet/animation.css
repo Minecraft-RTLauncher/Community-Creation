@@ -46,3 +46,78 @@
 		transform: translateX(-100%);
 	}
 }
+
+/* 弹幕发送表单样式 */
+.danmaku-form-container {
+  position: fixed;
+  bottom: 40px;
+  left: 0;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  z-index: 10;
+  padding: 0 20px;
+}
+
+.danmaku-form {
+  display: flex;
+  background: rgba(0, 0, 0, 0.5);
+  border-radius: 20px;
+  padding: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(5px);
+  width: 100%;
+  max-width: 500px;
+}
+
+#danmaku-input {
+  flex: 1;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  border-radius: 15px;
+  padding: 8px 15px;
+  color: #fff;
+  font-size: 16px;
+  outline: none;
+  margin-right: 8px;
+}
+
+#danmaku-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+#danmaku-submit {
+  background: linear-gradient(45deg, #4ecdc4, #556270);
+  border: none;
+  border-radius: 15px;
+  color: white;
+  padding: 8px 15px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+#danmaku-submit:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 8px rgba(78, 205, 196, 0.6);
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+  .danmaku-form-container {
+    bottom: 20px;
+  }
+  
+  .danmaku-form {
+    padding: 6px;
+  }
+  
+  #danmaku-input {
+    font-size: 14px;
+  }
+  
+  #danmaku-submit {
+    font-size: 14px;
+    padding: 6px 12px;
+  }
+}
