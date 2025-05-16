@@ -78,17 +78,20 @@
 }
 
 .menu-list li {
-    padding: 15px;
+    height: 3em;
+    padding-right: 2em;
     margin: 10px 0;
-    border-radius: 5px;
+    border-radius: 1em;
     transition: background 0.3s;
     text-align: right;
+    line-height: 3em;
 }
 
 .menu-list li:hover {
     background: rgba(255, 255, 255, 0.1);
 }
 .meun-list-img {
+    vertical-align: 0.25em;
     transform: translateY(10px);
 }
 
