@@ -6,7 +6,7 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	font-family: 'Helvetica Neue', sans-serif;
+	font-family: 'Helvetica Neue','Segoe UI', system-ui, sans-serif;
 	overflow: hidden;
 }
 
@@ -32,6 +32,7 @@ body::after {
 /* 居中容器 */
 .container {
 	text-align: center;
+	margin: auto;
 	transform: translateY(-50%);
 	opacity: 0;
 	transition: all 1s ease;
@@ -228,18 +229,20 @@ body::after {
 	}
 }
 
-/* 备案 */
+/*备案*/
 .footer-beian {
 	position: fixed;
 	bottom: 1em;
 	z-index: 2;
 }
-
-.footer-beian a, .footer-beian a:visited {
-	color: #ffffff;
-	text-decoration: none;
+.footer-beian p {
+	font-family: 'Segoe UI', system-ui, sans-serif;
+	font-weight: 500;
+	color: #fff;
 }
-
-.footer-beian a:hover {
-	text-decoration: underline;
+.footer-beian a {
+	font-family: 'Segoe UI', system-ui, sans-serif;
+	text-decoration: none; /*删下滑 Delete underline*/
+	font-weight: 400;
+	color: #c4c4c4;
 }
