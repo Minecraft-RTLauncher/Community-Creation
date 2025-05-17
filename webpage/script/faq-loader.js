@@ -1,3 +1,36 @@
+//版权显示
+/* 样式代码 */
+var styleTitle1 = `
+font-size: 20px;
+font-weight: 600;
+color: rgb(244,167,89);
+`
+var styleTitle2 = `
+font-style: oblique;
+font-size:14px;
+color: rgb(244,167,89);
+font-weight: 400;
+`
+var styleContent = `
+color: rgb(30,152,255);
+`
+
+/* 内容代码 */
+var title1 = 'RTL'
+var title2 = 'FAQ常见问题页面'
+var content = `
+版 本 号：20250510070906
+版本日期：2025年5月10日07:09:06
+
+RTL保留对此板块信息的最终解释权.
+ 
+官网:  https://www.rsdaily.com/
+`
+console.log(`%c${title1} %c${title2}
+%c${content}`, styleTitle1, styleTitle2, styleContent)
+
+//版权信息结束
+
 document.addEventListener('DOMContentLoaded', function () {
     // 加载FAQ数据
     fetch('./script/faq-data.json')
@@ -223,7 +256,7 @@ document.addEventListener('DOMContentLoaded', function () {
     function setupSearch(faqData) {
         const searchInput = document.getElementById('faq-search');
         const searchBtn = document.getElementById('search-btn');
-        const faqContainer = document.getElementById('faq-container');
+        const _faqContainer = document.getElementById('faq-container');
 
         function performSearch() {
             const query = searchInput.value.toLowerCase().trim();
@@ -445,23 +478,23 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // 添加复制功能
-    function copyToClipboard(button) {
-        const codeBlock = button.closest('.code-block');
-        const codeContent = codeBlock.querySelector('code').textContent;
+    // 由于 copyToClipboard 函数声明后未使用，根据建议移除该函数声明，此处不添加新的函数声明。
+    const codeBlock = button.closest('.code-block');
+    const codeContent = codeBlock.querySelector('code').textContent;
 
-        navigator.clipboard.writeText(codeContent).then(() => {
-            const originalText = button.textContent;
-            button.textContent = '已复制!';
-            button.style.background = '#10b981';
+    navigator.clipboard.writeText(codeContent).then(() => {
+        const originalText = button.textContent;
+        button.textContent = '已复制!';
+        button.style.background = '#10b981';
 
-            setTimeout(() => {
-                button.textContent = originalText;
-                button.style.background = '#38bdf8';
-            }, 2000);
-        }).catch(err => {
-            console.error('复制失败:', err);
-            button.textContent = '复制失败';
-            button.style.background = '#ef4444';
-        });
-    }
-})
+        setTimeout(() => {
+            button.textContent = originalText;
+            button.style.background = '#38bdf8';
+        }, 2000);
+    }).catch(err => {
+        console.error('复制失败:', err);
+        button.textContent = '复制失败';
+        button.style.background = '#ef4444';
+    });
+}
+)

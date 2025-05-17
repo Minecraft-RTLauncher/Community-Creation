@@ -1,3 +1,4 @@
+<!-- faq.html -->
 <!DOCTYPE html>
 <html lang="zh-CN">
 
@@ -5,7 +6,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>RTLauncher - 常见问题解答</title>
+    <!-- 引入marked库 -->
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <!-- 引入DOMPurify库 -->
+    <script src="https://cdn.jsdelivr.net/npm/dompurify/dist/purify.min.js"></script>
+    <!-- 引入highlight.js库（可选，用于代码高亮） -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.7.0/highlight.min.js"></script>
+    <!-- 引入自定义CSS -->
     <link rel="stylesheet" href="./stylesheet/faq.css">
+    <link rel="stylesheet" href="./stylesheet/ai-chat.css">
 </head>
 
 <body>
@@ -28,7 +38,37 @@
         </main>
     </div>
 
+    <!-- AI聊天浮窗 -->
+    <div class="ai-chat-container">
+        <div class="ai-chat-header">
+            <h3>Aria</h3>
+            <button class="close-btn">&times;</button>
+        </div>
+        <div class="ai-chat-messages"></div>
+        <div class="ai-chat-input">
+            <input type="text" placeholder="输入您的问题..." id="chat-input">
+            <button id="send-btn">发送</button>
+        </div>
+    </div>
+
+    <!-- 悬浮按钮 -->
+    <button class="ai-chat-toggle">
+        <!-- 使用内联SVG作为图标 -->
+        <svg t="1746842636857" class="icon" viewBox="0 0 1280 1024" version="1.1" xmlns="http://www.w3.org/2000/svg"
+            p-id="10035" width="200" height="200">
+            <path
+                d="M666.3 162.5c-188.6 0-341.5 152.9-341.5 341.5v221.2c0 66.4 53.8 120.3 120.3 120.3h221.2c188.6 0 341.5-152.9 341.5-341.5S854.9 162.5 666.3 162.5zM939.8 504c0 151-122.5 273.5-273.5 273.5H459.6c-36.9 0-66.8-29.9-66.8-66.8V504c0-151 122.4-273.5 273.5-273.5S939.8 352.9 939.8 504z"
+                p-id="10036"></path>
+            <path
+                d="M798.8 397h-265c-18.8 0-34 15.2-34 34s15.2 34 34 34h265c18.8 0 34-15.2 34-34s-15.2-34-34-34zM639 567H533.8c-18.8 0-34 15.2-34 34s15.2 34 34 34H639c18.8 0 34-15.2 34-34s-15.2-34-34-34z"
+                fill="#00F1A3" p-id="10037"></path>
+        </svg>
+    </button>
+
+    <!-- 引入自定义JavaScript -->
     <script src="./script/faq-loader.js"></script>
+    <script src="./script/ai-chat.js"></script>
+
 </body>
 
 </html>
