@@ -38,7 +38,7 @@ document.addEventListener("alpine:init", () => {
     Alpine.data("messageBoard", () => ({
         // API 配置变量
         apiConfig: {
-            //baseUrl: "https://api.hellofurry.cn/rtl/",
+            //baseUrl: "http://localhost:3000/",
             baseUrl: "https://api.hellofurry.cn/rtl/",
             endpoints: {
                 getMessages: "get-msg-wall.php",
