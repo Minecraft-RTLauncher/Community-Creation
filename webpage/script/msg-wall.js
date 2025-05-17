@@ -38,6 +38,7 @@ document.addEventListener("alpine:init", () => {
     Alpine.data("messageBoard", () => ({
         // API 配置变量
         apiConfig: {
+            //baseUrl: "https://api.hellofurry.cn/rtl/",
             baseUrl: "https://api.hellofurry.cn/rtl/",
             endpoints: {
                 getMessages: "get-msg-wall.php",
@@ -70,13 +71,25 @@ document.addEventListener("alpine:init", () => {
                             `${this.apiConfig.baseUrl}${this.apiConfig.endpoints.getMessages}?page=${e}`,
                         ),
                         s = await a.json();
-                    Array.isArray(s) &&
-                        (t
-                            ? ((this.messages = s), (this.currentPage = 1))
-                            : (this.messages = [...this.messages, ...s]),
-                            s.length > 0
-                                ? this.currentPage++
-                                : t && this.showToast("没有留言了", "info"));
+                    if (Array.isArray(s)) {
+                        // 新增：随机排序函数
+                        const shuffleArray = (array) => {
+                            for (let i = array.length - 1; i > 0; i--) {
+                                const j = Math.floor(Math.random() * (i + 1));
+                                [array[i], array[j]] = [array[j], array[i]];
+                            }
+                            return array;
+                        };
+
+                        const shuffledMessages = shuffleArray(s);
+
+                        t
+                            ? ((this.messages = shuffledMessages), (this.currentPage = 1))
+                            : (this.messages = [...this.messages, ...shuffledMessages]);
+                        shuffledMessages.length > 0
+                            ? this.currentPage++
+                            : t && this.showToast("没有留言了", "info");
+                    }
                 } catch (t) {
                     console.error("获取留言失败:", t),
                         (t instanceof TypeError || t instanceof SyntaxError) &&
@@ -169,13 +182,23 @@ document.addEventListener("alpine:init", () => {
             });
         },
         async submitMessage() {
-            if (this.form.captcha.toLowerCase() !== this.captchaText.toLowerCase())
-                return (
-                    this.showToast("验证码错误", "error"), void this.generateCaptcha()
-                );
-            this.isSubmitting = !0;
+            // 验证码检查
+            if (this.form.captcha.toLowerCase() !== this.captchaText.toLowerCase()) {
+                this.showToast("验证码错误", "error");
+                this.generateCaptcha();
+                return;
+            }
+
+            this.isSubmitting = true;
             try {
-                const t = await fetch(
+                // 显示请求日志
+                console.log("Submitting message:", {
+                    username: this.form.username,
+                    qq: this.form.qq,
+                    content: this.form.content
+                });
+
+                const response = await fetch(
                     `${this.apiConfig.baseUrl}${this.apiConfig.endpoints.sendMessage}`,
                     {
                         method: "POST",
@@ -187,28 +210,66 @@ document.addEventListener("alpine:init", () => {
                             qq: this.form.qq,
                             content: this.form.content,
                         }),
-                    },
-                ),
-                    e = await t.json();
-                e.success
-                    ? (this.showToast("留言提交成功", "success"),
-                        this.confetti(),
-                        (this.form = {
-                            username: "",
-                            qq: "",
-                            content: "",
-                            captcha: "",
-                        }),
-                        this.generateCaptcha(),
-                        this.fetchMessages(!0))
-                    : this.showToast(e.message || "提交失败", "error");
-            } catch (t) {
-                console.error("提交留言失败:", t),
-                    this.showToast("网络错误，请重试", "error");
+                    }
+                );
+
+                // 记录原始响应
+                console.log("Raw response:", response);
+
+                // 检查HTTP状态码
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`HTTP error! status: ${response.status}, body: ${errorText}`);
+                }
+
+                const data = await response.json();
+                console.log("Parsed data:", data);
+
+                // 检查响应数据结构
+                if (!data) {
+                    throw new Error("服务器返回了空响应");
+                }
+
+                if (data.success) {
+                    this.showToast("留言提交成功", "success");
+                    this.confetti();
+                    // 重置表单
+                    this.form = {
+                        username: "",
+                        qq: "",
+                        content: "",
+                        captcha: "",
+                    };
+                    this.generateCaptcha();
+                    // 刷新留言列表
+                    this.fetchMessages(true);
+                } else {
+                    // 处理业务逻辑错误
+                    const errorMsg = data.error || data.message || "提交失败，未知错误";
+                    throw new Error(errorMsg);
+                }
+            } catch (error) {
+                console.error("提交留言失败:", error);
+                let errorMsg = "网络错误，请重试";
+
+                // 更详细的错误信息
+                if (error instanceof TypeError) {
+                    errorMsg = "网络请求失败，请检查连接";
+                } else if (error instanceof SyntaxError) {
+                    errorMsg = "服务器返回了无效数据";
+                } else if (error.message.includes("HTTP error")) {
+                    errorMsg = `服务器错误: ${error.message}`;
+                } else if (error.message) {
+                    errorMsg = error.message;
+                }
+
+                this.showToast(errorMsg, "error");
+                this.generateCaptcha();
             } finally {
-                this.isSubmitting = !1;
+                this.isSubmitting = false;
             }
         },
+
         async sendLikeToBackend(t, e) {
             try {
                 const a = await fetch(
@@ -254,14 +315,29 @@ document.addEventListener("alpine:init", () => {
                 minute: "2-digit",
             }),
         showToast(t, e = "info") {
+            const colors = {
+                success: "linear-gradient(145deg, rgba(165, 165, 165, 0.9), rgba(165, 165, 165, 0.9))", 
+                error: "linear-gradient(145deg, rgba(239, 68, 68, 0.9), rgba(239, 68, 68, 0.9))", 
+                info: "rgba(255, 255, 255, 0.15)"
+            };
+
+            const textColors = {
+                success: "#f0fdf4",
+                error: "#fef2f2",
+                info: "rgba(255, 255, 255, 0.9)"
+            };
+
             const a = document.createElement("div");
-            (a.className = `fixed bottom-4 right-4 px-4 py-2 rounded-md shadow-lg text-white ${"success" === e ? "bg-green-600" : "error" === e ? "bg-red-600" : "bg-blue-600"} animate-slide-up`),
-                (a.textContent = t),
-                document.body.appendChild(a),
-                setTimeout(() => {
-                    a.classList.add("opacity-0", "transition-opacity", "duration-300"),
-                        setTimeout(() => a.remove(), 300);
-                }, 3e3);
+            a.className = `fixed bottom-4 right-4 px-4 py-2 rounded-md shadow-lg backdrop-blur-sm`;
+            a.style.background = colors[e];
+            a.style.color = textColors[e];
+            a.style.border = "1px solid rgba(255, 255, 255, 0.1)";
+            a.textContent = t;
+            document.body.appendChild(a);
+            setTimeout(() => {
+                a.classList.add("opacity-0", "transition-opacity", "duration-300");
+                setTimeout(() => a.remove(), 300);
+            }, 3000);
         },
         confetti() {
             confetti({
@@ -273,9 +349,89 @@ document.addEventListener("alpine:init", () => {
                 colors: ["#4d7c0f", "#84cc16", "#ecfccb"],
             });
         },
+        // 新增：显示举报对话框
+        showReportDialog(messageId) {
+            Swal.fire({
+                title: '举报留言',
+                html: `
+                    <input id="swal-input1" class="swal2-input" placeholder="请输入举报原因">
+                `,
+                focusConfirm: false,
+                preConfirm: () => {
+                    const reason = document.getElementById('swal-input1').value;
+                    if (!reason) {
+                        Swal.showValidationMessage('请输入举报原因');
+                    }
+                    return { reason };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const data = {
+                        message_id: messageId,
+                        reason: result.value.reason
+                    };
+
+                    fetch('https://api.hellofurry.cn/rtl/report-msg-wall.php', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                Swal.fire('成功', '举报已记录', 'success');
+                            } else {
+                                Swal.fire('失败', data.error, 'error');
+                            }
+                        })
+                        .catch(_error => {
+                            Swal.fire('错误', '举报请求失败', 'error');
+                        });
+                }
+            });
+        },
+        // 新增：提交举报请求
+        async submitReport(messageId, reason) {
+            try {
+                const response = await fetch(`${this.apiConfig.baseUrl}report-msg-wall.php`, {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        message_id: messageId,
+                        reason: reason || ''
+                    })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(data.error || '举报失败');
+                }
+
+                this.showToast("举报已提交，感谢您的反馈！", "success");
+                // 更新本地数据
+                this.messages = this.messages.map(msg => {
+                    if (msg.id === messageId) {
+                        return { ...msg, report_count: (msg.report_count || 0) + 1 };
+                    }
+                    return msg;
+                });
+            } catch (error) {
+                this.showToast(`举报失败: ${error.message}`, "error");
+            }
+        },
     }));
 });
 const style = document.createElement("style");
 (style.textContent =
     "\n    @keyframes heart {\n        0% { transform: translateY(0) scale(1); opacity: 1; }\n        100% { transform: translateY(-100px) scale(1.5); opacity: 0; }\n    }\n    .animate-heart {\n        animation: heart 1s ease-out forwards;\n    }\n"),
     document.head.appendChild(style);
+// 在留言卡片创建时添加以下代码
+const items = document.querySelectorAll('.masonryItem');
+items.forEach(item => {
+    item.style.setProperty('--x', Math.random() > 0.5 ? 1 : -1);
+    item.style.setProperty('--y', Math.random() > 0.5 ? 1 : -1);
+    item.style.setProperty('--r', (Math.random() * 15 + 15) * (Math.random() > 0.5 ? 1 : -1));
+});

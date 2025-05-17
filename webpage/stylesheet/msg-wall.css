@@ -1,127 +1,206 @@
-/*2025年5月10日 程序格式化代码*/
+/* msg-wall.css */
+/* 2025年5月10日 黑白灰极简版 */
 @font-face {
-    font-family: Minecraft;
-    src: url(../assets/fonts/5_Minecraft-AE.woff2) format("truetype")
+  font-family: Minecraft;
+  src: url(../assets/fonts/5_Minecraft-AE.woff2) format("truetype");
 }
 
-body,
-body * {
-    font-family: Minecraft, sans-serif !important
+body {
+  background-image: url("../assets/faqbg.svg") !important; /* 关键修改 */
+  background-attachment: fixed !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  background-position: center center !important;
+  color: rgba(255, 255, 255, 0.9);
+  font-family: Minecraft, sans-serif;
+  min-height: 100vh;
 }
-
-@keyframes fadeIn {
-    0% {
-        opacity: 0
-    }
-
-    to {
-        opacity: 1
-    }
-}
-
-@keyframes slideUp {
-    0% {
-        opacity: 0;
-        transform: translateY(20px)
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0)
-    }
-}
-
-.animateFadeIn {
-    animation: fadeIn .6s ease-out forwards
-}
-
-.animateSlideUp {
-    animation: slideUp .6s ease-out forwards
-}
-
-::-webkit-scrollbar {
-    width: 8px;
-    height: 8px
-}
-
-::-webkit-scrollbarTrack {
-    background: #1a1a1a
-}
-
-::-webkit-scrollbarThumb {
-    background: #4d7c0f;
-    border-radius: 4px
-}
-
-::-webkit-scrollbarThumb:hover {
-    background: #65a30d
-}
-
-.captchaContainer,
-.captchaImage {
-    display: flex;
-    align-items: center;
-    justify-content: center
-}
-
-.captchaContainer {
-    position: relative;
-    height: 40px;
-    width: 120px;
-    overflow: hidden;
-    border-radius: 4px;
-    background: #1a1a1a;
-    cursor: pointer;
-    user-select: none
-}
-
-.maxW4xl,
-.messageContent,
-.spaceY6>div,
-div[role=alert] {
-    word-break: break-word !important;
-    white-space: normal !important;
-    overflow-wrap: break-word;
-    line-height: 1.5
-}
-
-.messageContent {
-    max-width: 100%;
-    min-height: 1em
-}
-
+/* 玻璃拟态系统 */
 .glassEffect {
-    background: rgba(39, 39, 39, .5) !important;
-    border-color: rgba(74, 222, 128, .3) !important;
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    transform: translateZ(0)
+  background: rgba(0, 0, 0, 0.4) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.bgGray800.bgOpacity80 {
-    background: rgba(31, 41, 55, .3) !important
+.glassEffect:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
 }
 
+/* 色彩系统 */
+.text-primary {
+  color: rgba(255, 255, 255, 0.9) !important;
+}
+.text-secondary {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+.border-primary {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+}
+
+/* 输入系统 */
+input,
+textarea {
+  background: rgba(255, 255, 255, 0.05) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  color: white !important;
+  transition: all 0.3s ease;
+}
+
+input:focus,
+textarea:focus {
+  border-color: rgba(255, 255, 255, 0.3) !important;
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.1);
+}
+
+/* 按钮系统 */
+.btn-monochrome {
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.1),
+    rgba(0, 0, 0, 0.1)
+  ) !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: white !important;
+  backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+}
+
+.btn-monochrome:hover {
+  background: linear-gradient(
+    145deg,
+    rgba(255, 255, 255, 0.15),
+    rgba(0, 0, 0, 0.05)
+  ) !important;
+  transform: translateY(-1px);
+}
+
+/* 留言卡片 */
 .masonryGrid {
-    columns: 300px;
-    column-gap: 1.5rem
+  columns: 300px;
+  column-gap: 1.5rem;
 }
 
 .masonryItem {
-    display: inline-block;
-    width: 100%;
-    margin-bottom: 1.5rem;
-    break-inside: avoid
+  display: inline-block;
+  width: 100%;
+  margin-bottom: 1.5rem;
+  break-inside: avoid;
+  background: rgba(30, 30, 30, 0.6) !important;
+  animation: flyIn 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+  opacity: 0;
 }
 
-@media (min-width:768px) {
-    .masonryGrid {
-        column-count: 2
-    }
+@keyframes flyIn {
+  0% {
+    transform: translate(calc(100vw * var(--x, 1)), calc(100vh * var(--y, 0)))
+      rotate(calc(var(--r, 0) * 1deg));
+    opacity: 0;
+  }
+  70% {
+    transform: translate(calc(-20px * var(--x, 1)), calc(-20px * var(--y, 1)))
+      rotate(calc(var(--r, 0) * -0.5deg));
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0) rotate(0);
+    opacity: 1;
+  }
 }
 
-@media (min-width:1024px) {
-    .masonryGrid {
-        column-count: 3
-    }
+/* 验证码容器 */
+.captchaContainer {
+  background: rgba(20, 20, 20, 0.8) !important;
+  border: 1px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 4px;
+  height: 40px;
+  width: 120px;
+  cursor: pointer;
+}
+
+/* 动画系统 */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animateFadeIn {
+  animation: fadeIn 0.6s ease-out;
+}
+.animateSlideUp {
+  animation: slideUp 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+/* 滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+@media (min-width: 768px) {
+  .masonryGrid {
+    column-count: 2;
+  }
+}
+
+@media (min-width: 1024px) {
+  .masonryGrid {
+    column-count: 3;
+  }
+}
+
+/* 修改点赞数和按钮颜色 */
+.text-like {
+  color: #eeff00 !important; /* 柔和的黄绿色 */
+}
+
+.btn-like {
+  color: rgba(255, 255, 255, 0.8) !important;
+  transition: color 0.2s ease;
+}
+
+.btn-like:hover {
+  color: #eeff00 !important;
+  transform: scale(1.05);
+}
+
+.btn-report {
+  color: rgba(255, 255, 255, 0.8) !important;
+  transition: color 0.2s ease;
+}
+
+.btn-report:hover {
+  color: #ef4444 !important;
+  transform: scale(1.05);
 }
