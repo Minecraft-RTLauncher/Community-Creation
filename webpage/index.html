@@ -3,22 +3,54 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>RTLauncher启动器</title>
+	<title>RTLauncher | 永远随行 </title>
 	<link rel="shortcut icon" href="assets/logo.svg" type="image/x-icon">
 
 	<link rel="stylesheet" href="./stylesheet/index.css">
 	<link rel="stylesheet" href="./stylesheet/animation.css">
+	<link rel="stylesheet" href="./stylesheet/top-meun.css">
 
 	<script src="./script/index.js"></script>
 	<script src="./script/particle.js"></script>
 	<script src="./script/danmaku.js"></script>
 	<script src="./script/logo3Danimation.js"></script>
+	<script src="./script/top-meun.js"></script>
 </head>
 
 <body>
+
+<!-- TopMeun -->
+<div class="top-meun">
+	<nav class="top-bar">
+        <a href="#" class="top-logo">RTLauncher</a>
+        <div class="menu-btn">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+    </nav>
+
+    <div class="menu-panel">
+        <ul class="menu-list">
+            <li class="meun-list-li">
+				<img class="meun-list-img" src="assets/icon/notification-badge-line.png" alt="icon">
+				留言板板
+				<!-- 添加 <a> 标签直接覆盖上侧文字 -->
+				<!-- 我的 css 在 top-meun.css -->
+			</li>
+			<li class="meun-list-li">
+				<img class="meun-list-img" src="assets/icon/question-line.png" alt="icon">
+				常见问题
+				<!-- 添加 <a> 标签直接覆盖上侧文字 -->
+			</li>
+        </ul>
+    </div>
+</div>
+
 <div class="container">
 	<div class="logo">
 		<div class="logo-inner">
+			<!-- logo> container 怎么没有办法剧中了 ??? -->
 			<img src="assets/logo.svg" alt="">
 		</div>
 	</div>
@@ -35,7 +67,7 @@
 </div>
 
 <div class="danmaku-container"></div>
-
+  
 <!-- 添加弹幕发送表单 -->
 <div class="danmaku-form-container">
   <form id="danmaku-form" class="danmaku-form">
@@ -43,11 +75,12 @@
     <button type="submit" id="danmaku-submit">发送</button>
   </form>
 </div>
-
+  
 <div class="footer-beian">
-	<a href="https://beian.miit.gov.cn/" target="_blank">闽ICP备2024058720号-2</a>
+	<p> © RTL Team All rights reserved | <a href="https://beian.miit.gov.cn/" target="_blank"> <i>闽ICP备 - 号</i> </a> </p>
 </div>
 </body>
+<!-- OLD MEUN 旧的侧菜单
 <div class="container">
 	<div class="nav-buttons">
 		<a href="msg-wall.html" class="nav-btn msg-wall-btn">
@@ -64,4 +97,5 @@
 		</a>
 	</div>
 </div>
+-->
 </html>

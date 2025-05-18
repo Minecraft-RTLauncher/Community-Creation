@@ -6,7 +6,7 @@ body {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	font-family: 'Helvetica Neue', sans-serif;
+	font-family: 'Helvetica Neue','Segoe UI', system-ui, sans-serif;
 	overflow: hidden;
 }
 
@@ -32,10 +32,12 @@ body::after {
 /* 居中容器 */
 .container {
 	text-align: center;
+	margin: auto;
 	transform: translateY(-50%);
 	opacity: 0;
 	transition: all 1s ease;
 	z-index: 2;
+	
 }
 
 /* 中央Logo */
@@ -100,6 +102,7 @@ body::after {
 	justify-content: center;
 	gap: 40px;
 	z-index: 2;
+	margin-bottom: 10px;
 }
 
 .social-links img {
@@ -228,4 +231,23 @@ body::after {
 		justify-content: center;
 		padding: 15px 20px;
 	}
+}
+
+/*备案*/
+.footer-beian {
+	position: fixed;
+	float: bottom;
+	bottom: 10px;
+	z-index: 3;
+}
+.footer-beian p {
+	font-family: 'Segoe UI', system-ui, sans-serif;
+	font-weight: 500;
+	color: #fff;
+}
+.footer-beian a {
+	font-family: 'Segoe UI', system-ui, sans-serif;
+	text-decoration: none; /*删下滑 Delete underline*/
+	font-weight: 400;
+	color: #c4c4c4;
 }
